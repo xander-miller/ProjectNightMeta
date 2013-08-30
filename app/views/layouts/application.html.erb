@@ -3,11 +3,12 @@
 <head>
   <title>ProjectNightMeta</title>
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-  
+  <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
 </head>
 <body>
   <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -23,14 +24,29 @@
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact</a></li>
           </ul>
+          <ul class="nav navbar-nav pull-right">
+            <% if user_signed_in? %>
+            <li><%= link_to "#{current_user.name}", "#" %></li>
+            <li><%= link_to "Sign Out", destroy_user_session_path, method: :delete %></li>
+            <% else %>
+            <li><%= link_to "Sign in with Meetup", user_omniauth_authorize_path(:meetup) %></li>
+            <% end %>
+          </ul>
         </div><!--/.nav-collapse -->
       </div>
     </div>
   </div>
-  <div class="container">
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
-    <%= yield %>
+  <div id="main" role="main">
+    <div class="container">
+      <div class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <%= render 'layouts/messages' %>
+            <%= yield %>
+          </div>
+        </div>
+      </div>
+    </div>
   </div><!-- /.container -->
 </body>
 </html>

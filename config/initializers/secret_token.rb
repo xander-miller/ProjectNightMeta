@@ -9,4 +9,4 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-ProjectNightMeta::Application.config.secret_key_base = '4703d24413f980d4fcea7dd45630469b17e88d8b0966c1e049b68e0bf2307de04b350f951d2360a8421c1e2e5ec5a509fa9596a0374791c8a83a1dc74082f65f'
+ProjectNightMeta::Application.config.secret_key_base = ENV['SECRET_TOKEN']
