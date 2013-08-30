@@ -19,4 +19,4 @@
 .DS_Store
 
 # Ignore env_values.rb
-/config/initializers/env_values.rb
+/config/initializers/01_env_values.rb

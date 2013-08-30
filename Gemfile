@@ -39,6 +39,7 @@ gem 'bootstrap-sass-rails'
 
 gem 'omniauth'
 gem 'omniauth-meetup'
+gem 'certified'
 
 #User Authentication and OAuth support
 gem 'devise'
