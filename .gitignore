@@ -17,3 +17,7 @@
 
 #Ignore OSX cache files
 .DS_Store
+
+# don't track config/database.yml - developer-specific, copied from .yml.dbname file
+config/database.yml
+
