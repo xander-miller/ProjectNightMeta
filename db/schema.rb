@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130907213755) do
+ActiveRecord::Schema.define(version: 20130914173856) do
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "",       null: false
@@ -45,9 +45,7 @@ ActiveRecord::Schema.define(version: 20130907213755) do
 
   add_index "users", ["city"], name: "index_users_on_city", using: :btree
   add_index "users", ["country"], name: "index_users_on_country", using: :btree
-  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["mu_id"], name: "index_users_on_mu_id", using: :btree
   add_index "users", ["mu_name"], name: "index_users_on_mu_name", using: :btree
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
 end
