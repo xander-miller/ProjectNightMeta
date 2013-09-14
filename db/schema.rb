@@ -11,14 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130829001835) do
-
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+ActiveRecord::Schema.define(version: 20130914173856) do
 
   create_table "users", force: true do |t|
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
+    t.string   "email",                  default: "",       null: false
+    t.string   "encrypted_password",     default: "",       null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -29,9 +26,26 @@ ActiveRecord::Schema.define(version: 20130829001835) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "provider",               default: "meetup"
+    t.integer  "uid",                                       null: false
+    t.integer  "mu_id",                                     null: false
+    t.string   "mu_name",                                   null: false
+    t.string   "mu_link",                                   null: false
+    t.string   "authentication_token"
+    t.string   "mu_refresh_token"
+    t.integer  "mu_expires_at"
+    t.boolean  "mu_expires",             default: true
+    t.string   "mu_photo_link"
+    t.string   "mu_highres_link"
+    t.string   "mu_thumb_link"
+    t.integer  "mu_photo_id"
+    t.string   "city"
+    t.string   "country"
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+  add_index "users", ["city"], name: "index_users_on_city", using: :btree
+  add_index "users", ["country"], name: "index_users_on_country", using: :btree
+  add_index "users", ["mu_id"], name: "index_users_on_mu_id", using: :btree
+  add_index "users", ["mu_name"], name: "index_users_on_mu_name", using: :btree
 
 end
