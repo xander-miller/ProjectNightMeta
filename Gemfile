@@ -5,6 +5,7 @@ gem 'rails', '4.0.0'
 
 # Use postgresql as the database for Active Record
 group :development do
+	gem 'pg'
 	gem 'sqlite3'
 end
 
@@ -38,6 +39,8 @@ gem 'jbuilder', '~> 1.2'
 gem 'bootstrap-sass-rails'
 
 #User Authentication and OAuth support
+gem 'omniauth'
+gem 'omniauth-meetup'
 gem 'devise'
 
 group :doc do
