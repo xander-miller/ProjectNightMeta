@@ -54,4 +54,63 @@ class ActiveSupport::TestCase
     }
   end
 
+  def new_group_hash
+    # source: http://www.meetup.com/meetup_api/docs/2/groups/
+    #   GET https://api.meetup.com/2/groups?&sign=true&member_id=111
+    json_s = '{
+      "results": [
+        {
+          "lon": -75.69000244140625,
+          "visibility": "public",
+          "organizer": {
+            "name": "Edward Ocampo-Gooding",
+            "member_id": 9402939
+          },
+          "link": "http://www.meetup.com/OttawaRuby/",
+          "state": "ON",
+          "join_mode": "open",
+          "who": "Ruby Ninjas",
+          "country": "CA",
+          "city": "Ottawa",
+          "id": 1523801,
+          "category": {
+            "id": 34,
+            "name": "tech",
+            "shortname": "tech"
+          },
+          "topics": [
+            {
+              "id": 563,
+              "urlkey": "opensource",
+              "name": "Open Source"
+            },
+            {
+              "id": 1040,
+              "urlkey": "ruby",
+              "name": "Ruby"
+            }
+          ],
+          "timezone": "Canada/Eastern",
+          "group_photo": {
+            "photo_link": "http://photos1.meetupstatic.com/photos/event/d/9/e/6/600_274375782.jpeg",
+            "highres_link": "http://photos1.meetupstatic.com/photos/event/d/9/e/6/highres_274375782.jpeg",
+            "thumb_link": "http://photos1.meetupstatic.com/photos/event/d/9/e/6/thumb_274375782.jpeg",
+            "photo_id": 274375782
+          },
+          "created": 1252978801000,
+          "description": "<p>Ottawa Ruby is a group of programming enthusiasts that get together once in a while to hack, present, and talk about the Ruby programming language. Join us on our website and mailing lists at http://www.ottawaruby.ca/</p>",
+          "name": "Ottawa Ruby – we <3 programming",
+          "rating": 4.46,
+          "urlname": "OttawaRuby",
+          "lat": 45.43000030517578,
+          "members": 439
+        }
+      ],
+
+      "meta": {}
+    }'
+
+    ActiveSupport::JSON.decode(json_s)
+  end
+
 end
