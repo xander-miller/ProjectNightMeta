@@ -1,11 +1,40 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
-# This model initially had no columns defined.  If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-#one: {}
-# column: value
-#
-#two: {}
-#  column: value
+rug:
+  id: 1
+  mu_id: 421325
+  mu_name: "Ottawa Ruby"
+  mu_link: "http://www.meetup.com/OttawaRuby/"
+  mu_photo_link: "http://photos1.meetupstatic.com/photos/event/d/9/e/6/600_274375782.jpeg"
+  mu_highres_link: "http://photos1.meetupstatic.com/photos/event/d/9/e/6/highres_274375782.jpeg"
+  mu_thumb_link: "http://photos1.meetupstatic.com/photos/event/d/9/e/6/thumb_274375782.jpeg"
+  mu_photo_id: 274375782
+  mu_organizer_id: 2324423
+  mu_organizer_name: "Edward Ocampo-Gooding"
+  city: "Ottawa"
+  state: "ON"
+  country: "CA"
+  description: "<p>Ottawa Ruby is a group of programming enthusiasts that get together once in a while to hack, present, and talk about the Ruby programming language. Join us on our website and mailing lists at http://www.ottawaruby.ca/</p>"
+  urlname: "OttawaRuby"
+  visibility: "public"
+  who: "Ruby Ninjas"
+
+foojs:
+  id: 2
+  mu_id: 521325
+  mu_name: "Ottawa Foo.js"
+  mu_link: "http://www.meetup.com/FooJs/"
+  mu_photo_link: "http://photos1.meetupstatic.com/photos/event/d/9/e/6/600_3234232.jpeg"
+  mu_highres_link: "http://photos1.meetupstatic.com/photos/event/d/9/e/6/highres_3234232.jpeg"
+  mu_thumb_link: "http://photos1.meetupstatic.com/photos/event/d/9/e/6/thumb_3234232.jpeg"
+  mu_photo_id: 3234232
+  mu_organizer_id: 21
+  mu_organizer_name: "Joe User"
+  city: "Ottawa"
+  state: "ON"
+  country: "CA"
+  description: "<p>Group to learn about Foo.js</p>"
+  urlname: "OttawaFooJs"
+  visibility: "public"
+  who: "Foos"
+

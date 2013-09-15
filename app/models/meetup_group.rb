@@ -2,6 +2,9 @@ class MeetupGroup < ActiveRecord::Base
 
   validates_uniqueness_of :mu_id
 
+  has_many :group_users, class_name: 'UserGroup', foreign_key: :group_mu_id, primary_key: :mu_id
+  has_many :users, through: :group_users, source: :user
+
 
   # class methods
 

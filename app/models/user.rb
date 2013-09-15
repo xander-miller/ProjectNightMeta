@@ -9,6 +9,9 @@ class User < ActiveRecord::Base
 
   validates_uniqueness_of :mu_id
 
+  has_many :user_groups, class_name: 'UserGroup', foreign_key: :user_mu_id, primary_key: :mu_id
+  has_many :groups, through: :user_groups, source: :group
+
 
   # class methods
 
