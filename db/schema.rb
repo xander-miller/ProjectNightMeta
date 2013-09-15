@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130914190153) do
+ActiveRecord::Schema.define(version: 20130915191640) do
 
   create_table "meetup_groups", force: true do |t|
     t.integer  "mu_id",             null: false
@@ -36,6 +36,17 @@ ActiveRecord::Schema.define(version: 20130914190153) do
 
   add_index "meetup_groups", ["mu_id"], name: "index_meetup_groups_on_mu_id", using: :btree
   add_index "meetup_groups", ["mu_name"], name: "index_meetup_groups_on_mu_name", using: :btree
+
+  create_table "user_groups", force: true do |t|
+    t.integer  "user_mu_id",                 null: false
+    t.integer  "group_mu_id",                null: false
+    t.boolean  "show",        default: true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "user_groups", ["group_mu_id"], name: "index_user_groups_on_group_mu_id", using: :btree
+  add_index "user_groups", ["user_mu_id"], name: "index_user_groups_on_user_mu_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "",       null: false

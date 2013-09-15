@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class MeetupGroupTest < ActiveSupport::TestCase
+  fixtures :meetup_groups
+
   test "a build new group" do
     root_hash = new_group_hash
     h = root_hash["results"].first
@@ -54,6 +56,14 @@ class MeetupGroupTest < ActiveSupport::TestCase
 
     groups = MeetupGroup.where(["mu_id=?", group.mu_id])
     assert_equal 1, groups.length, "Should be one row"
+  end
+
+  test "has many users" do
+    group = meetup_groups(:rug)
+    assert_equal 1, group.group_users.length, "Should have 1 UserGroup associations"
+    assert_equal UserGroup, group.group_users.first.class, "Should be UserGroup class"
+    assert_equal 1, group.users.length, "Should have 1 User associations"
+    assert_equal User, group.users.first.class, "Should be User class"
   end
 
 end
