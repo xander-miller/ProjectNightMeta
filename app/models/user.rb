@@ -47,4 +47,18 @@ class User < ActiveRecord::Base
 
   # instance methods
 
+  def member_of?(group)
+    UserGroup.has_entry?(self, group)
+  end
+
+  def import_meetup_groups(array)
+    imported = []
+    array.each { | hash |
+      group = MeetupGroup.import_with(hash)
+      group.add(self)
+      imported.push(group)
+    }
+    imported
+  end
+
 end

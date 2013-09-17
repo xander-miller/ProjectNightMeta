@@ -36,7 +36,34 @@ class MeetupGroup < ActiveRecord::Base
     group
   end
 
+  def self.import_with(meetup_group_hash)
+    h = meetup_group_hash
+    if exists?(["mu_id=?", h["id"]])
+      group = find_by_mu_id(h["id"])
+      group.refresh_with(h)
+    else
+      group = build_with(h)
+      group.save!
+    end
+    group
+  end
+
 
   # instance methods
+
+  def add(user)
+    return user if user.member_of?(self)
+
+    assoc = UserGroup.new
+    assoc.user = user
+    assoc.group = self
+    assoc.save!
+
+    user
+  end
+
+  def refresh_with(h)
+    # TODO - refresh_with(h) - update attibutes with values from h
+  end
 
 end
