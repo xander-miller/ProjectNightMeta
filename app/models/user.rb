@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
   #
   #devise :omniauthable # disabled for now
 
+  validates_presence_of   :uid, :mu_id, :mu_name, :mu_link, :provider
   validates_uniqueness_of :mu_id
 
   has_many :user_groups, class_name: 'UserGroup', foreign_key: :user_mu_id, primary_key: :mu_id

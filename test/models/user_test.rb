@@ -63,4 +63,44 @@ class UserTest < ActiveSupport::TestCase
     assert_equal MeetupGroup, user.groups.first.class, "Should be MeetupGroup class"
   end
 
+  test "validate presence of uid" do
+    user = User.new
+    exception = assert_raise(ActiveRecord::RecordInvalid) {user.save!}
+    assert exception.message.index("Uid can't be blank")
+  end
+
+  test "validate presence of mu_id" do
+    user = User.new
+    user.uid = 94022
+    exception = assert_raise(ActiveRecord::RecordInvalid) {user.save!}
+    assert exception.message.index("Mu can't be blank")
+  end
+
+  test "validate presence of mu_name" do
+    user = User.new
+    user.uid = 94022
+    user.mu_id = 4902
+    exception = assert_raise(ActiveRecord::RecordInvalid) {user.save!}
+    assert exception.message.index("Mu name can't be blank")
+  end
+
+  test "validate presence of mu_link" do
+    user = User.new
+    user.uid = 94022
+    user.mu_id = 4902
+    user.mu_name = "Jane"
+    exception = assert_raise(ActiveRecord::RecordInvalid) {user.save!}
+    assert exception.message.index("Mu link can't be blank")
+  end
+
+  test "validate presence of provider" do
+    user = User.new
+    user.uid = 94022
+    user.mu_id = 4902
+    user.mu_name = "Jane"
+    user.provider = nil
+    exception = assert_raise(ActiveRecord::RecordInvalid) {user.save!}
+    assert exception.message.index("Provider can't be blank")
+  end
+
 end
