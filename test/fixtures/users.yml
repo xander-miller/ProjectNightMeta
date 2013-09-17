@@ -1,11 +1,16 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
-# This model initially had no columns defined.  If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-#one: {}
-# column: value
-#
-#two: {}
-#  column: value
+joe:
+  id: 10
+  provider: "meetup"
+  uid: 12345
+  mu_id: 21
+  mu_name: "Joe User"
+  mu_link: "http://www.meetup.com/members/21"
+  authentication_token: "qwerty123"
+  mu_photo_link: "http://photos3.meetupstatic.com/photos/member_pic_21.jpeg"
+  mu_thumb_link: "http://photos1.meetupstatic.com/photos/member_pic_21_thumb.jpeg"
+  city: "Ottawa"
+  country: "CA"
+  email: "joe@here"
+

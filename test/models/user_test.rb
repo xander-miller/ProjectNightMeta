@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
+  fixtures :users
+
   test "a register new user" do
     h = new_user_hash
 
@@ -51,6 +53,14 @@ class UserTest < ActiveSupport::TestCase
 
     users = User.where(["mu_id=?", user.mu_id])
     assert_equal 1, users.length, "Should be one row"
+  end
+
+  test "has many groups" do
+    user = users(:joe)
+    assert_equal 2, user.user_groups.length, "Should have 2 UserGroup associations"
+    assert_equal UserGroup, user.user_groups.first.class, "Should be UserGroup class"
+    assert_equal 2, user.groups.length, "Should have 2 MeetupGroup associations"
+    assert_equal MeetupGroup, user.groups.first.class, "Should be MeetupGroup class"
   end
 
 end
