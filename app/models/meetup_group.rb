@@ -10,28 +10,8 @@ class MeetupGroup < ActiveRecord::Base
   # class methods
 
   def self.build_with(meetup_group_hash)
-    h = meetup_group_hash
     group = new()
-    group.mu_id = h["id"]
-    group.mu_name = h["name"]
-    group.mu_link = h["link"]
-    group.city = h["city"]
-    group.state = h["state"]
-    group.country = h["country"]
-    group.description = h["description"]
-    group.urlname = h["urlname"]
-    group.visibility = h["visibility"]
-    group.who = h["who"]
-
-    organizer = h["organizer"]
-    group.mu_organizer_id = organizer["member_id"]
-    group.mu_organizer_name = organizer["name"]
-
-    photo = h["group_photo"]
-    group.mu_photo_link = photo["photo_link"]
-    group.mu_highres_link = photo["highres_link"]
-    group.mu_thumb_link = photo["thumb_link"]
-    group.mu_photo_id = photo["photo_id"]
+    group.refresh_with(meetup_group_hash)
 
     group
   end
@@ -43,8 +23,8 @@ class MeetupGroup < ActiveRecord::Base
       group.refresh_with(h)
     else
       group = build_with(h)
-      group.save!
     end
+    group.save!
     group
   end
 
@@ -62,8 +42,29 @@ class MeetupGroup < ActiveRecord::Base
     user
   end
 
-  def refresh_with(h)
-    # TODO - refresh_with(h) - update attibutes with values from h
+  def refresh_with(meetup_group_hash)
+    h = meetup_group_hash
+
+    self.mu_id = h["id"]
+    self.mu_name = h["name"]
+    self.mu_link = h["link"]
+    self.city = h["city"]
+    self.state = h["state"]
+    self.country = h["country"]
+    self.description = h["description"]
+    self.urlname = h["urlname"]
+    self.visibility = h["visibility"]
+    self.who = h["who"]
+
+    organizer = h["organizer"]
+    self.mu_organizer_id = organizer["member_id"]
+    self.mu_organizer_name = organizer["name"]
+
+    photo = h["group_photo"]
+    self.mu_photo_link = photo["photo_link"]
+    self.mu_highres_link = photo["highres_link"]
+    self.mu_thumb_link = photo["thumb_link"]
+    self.mu_photo_id = photo["photo_id"]
   end
 
 end
