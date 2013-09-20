@@ -1,0 +1,62 @@
+require 'test_helper'
+
+class ProjectTest < ActiveSupport::TestCase
+
+  test "a build new project" do
+    root_array = new_github_project_array
+    h = root_array.first
+
+    project = Project.build_with(h)
+
+    assert_equal h["id"], project.github_id, "github_id should match"
+    assert_equal h["private"], project.private, "private should match"
+    assert_equal h["fork"], project.fork, "fork should match"
+    assert_equal h["name"], project.name, "name should match"
+    assert_equal h["full_name"], project.full_name, "full_name should match"
+    assert_equal h["description"], project.description, "description should match"
+    assert_equal h["language"], project.language, "language should match"
+    assert_equal h["homepage"], project.homepage, "homepage should match"
+    assert_equal h["html_url"], project.html_url, "html_url should match"
+    assert_equal h["created_at"], project.created_at, "created_at should match"
+  end
+
+  test "validate presence of name" do
+    project = Project.new
+    exception = assert_raise(ActiveRecord::RecordInvalid) {project.save!}
+    assert exception.message.index("Name can't be blank")
+  end
+
+  test "save a built project" do
+    root_array = new_github_project_array
+    h = root_array.first
+
+    project = Project.build_with(h)
+    assert project.save!, "Should saved"
+    projects = Project.where(["github_id=?", project.github_id])
+    assert_equal 1, projects.length, "Should be one row"
+  end
+
+  test "save duplicate project" do
+    root_array = new_github_project_array
+    h = root_array.first
+
+    project = Project.build_with(h)
+    assert project.save!, "Should saved"
+    projects = Project.where(["github_id=?", project.github_id])
+    assert_equal 1, projects.length, "Should be one row"
+
+    project = Project.build_with(h)
+    exception = assert_raise(ActiveRecord::RecordInvalid) {project.save!}
+    assert_equal "Validation failed: Name has already been taken", exception.message
+
+    projects = Project.where(["github_id=?", project.github_id])
+    assert_equal 1, projects.length, "Should be one row"
+  end
+
+  test "belongs to owner" do
+    project = projects(:foo)
+    user = users(:joe)
+    assert_equal user, project.owner, "Should belong to owner"
+  end
+
+end
