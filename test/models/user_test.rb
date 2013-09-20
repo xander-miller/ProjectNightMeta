@@ -123,4 +123,25 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 3, user.groups.length, "Should have 3 (2 + 1 new) MeetupGroup associations"
   end
 
+  test "has many projects" do
+    user = users(:joe)
+    assert_equal 1, user.projects.length, "Should have 1 Project associations"
+  end
+
+  test "import user Github projects" do
+    user = users(:joe)
+
+    root_array = new_github_project_array
+    assert_equal 2, root_array.length, "Should be 2 projects in import payload"
+
+    imported = []
+    User.transaction do
+      imported = user.import_github_projects(root_array)
+    end
+    assert_equal root_array.length, imported.length, "Number imported should equal number in payload"
+
+    user.reload
+    assert_equal 2, user.projects.length, "Should have 2 new Project associations"
+  end
+
 end
