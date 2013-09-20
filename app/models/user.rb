@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
   #
   #devise :omniauthable # disabled for now
 
+  validates_presence_of   :uid, :mu_id, :mu_name, :mu_link, :provider
   validates_uniqueness_of :mu_id
 
   has_many :user_groups, class_name: 'UserGroup', foreign_key: :user_mu_id, primary_key: :mu_id
@@ -45,5 +46,19 @@ class User < ActiveRecord::Base
 
 
   # instance methods
+
+  def member_of?(group)
+    UserGroup.has_entry?(self, group)
+  end
+
+  def import_meetup_groups(array)
+    imported = []
+    array.each { | hash |
+      group = MeetupGroup.import_with(hash)
+      group.add(self)
+      imported.push(group)
+    }
+    imported
+  end
 
 end

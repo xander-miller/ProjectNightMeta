@@ -104,6 +104,53 @@ class ActiveSupport::TestCase
           "urlname": "OttawaRuby",
           "lat": 45.43000030517578,
           "members": 439
+        },
+
+        {
+          "lon": -75.69000244140625,
+          "visibility": "public",
+          "organizer": {
+            "name": "Joe User",
+            "member_id": 21
+          },
+          "link": "http://www.meetup.com/FooJs/",
+          "state": "ON",
+          "join_mode": "open",
+          "who": "Foos",
+          "country": "CA",
+          "city": "Ottawa",
+          "id": 521325,
+          "category": {
+            "id": 34,
+            "name": "tech",
+            "shortname": "tech"
+          },
+          "topics": [
+            {
+              "id": 563,
+              "urlkey": "opensource",
+              "name": "Open Source"
+            },
+            {
+              "id": 1040,
+              "urlkey": "foojs",
+              "name": "FooJs"
+            }
+          ],
+          "timezone": "Canada/Eastern",
+          "group_photo": {
+            "photo_link": "http://photos1.meetupstatic.com/photos/event/d/9/e/6/600_521325.jpeg",
+            "highres_link": "http://photos1.meetupstatic.com/photos/event/d/9/e/6/highres_521325.jpeg",
+            "thumb_link": "http://photos1.meetupstatic.com/photos/event/d/9/e/6/thumb_521325.jpeg",
+            "photo_id": 521325
+          },
+          "created": 1252978801000,
+          "description": "<p>Group to learn about Foo.js</p>",
+          "name": "Ottawa Foo.js",
+          "rating": 1.46,
+          "urlname": "OttawaFooJs",
+          "lat": 45.43000030517578,
+          "members": 9
         }
       ],
 

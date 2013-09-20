@@ -63,4 +63,64 @@ class UserTest < ActiveSupport::TestCase
     assert_equal MeetupGroup, user.groups.first.class, "Should be MeetupGroup class"
   end
 
+  test "validate presence of uid" do
+    user = User.new
+    exception = assert_raise(ActiveRecord::RecordInvalid) {user.save!}
+    assert exception.message.index("Uid can't be blank")
+  end
+
+  test "validate presence of mu_id" do
+    user = User.new
+    user.uid = 94022
+    exception = assert_raise(ActiveRecord::RecordInvalid) {user.save!}
+    assert exception.message.index("Mu can't be blank")
+  end
+
+  test "validate presence of mu_name" do
+    user = User.new
+    user.uid = 94022
+    user.mu_id = 4902
+    exception = assert_raise(ActiveRecord::RecordInvalid) {user.save!}
+    assert exception.message.index("Mu name can't be blank")
+  end
+
+  test "validate presence of mu_link" do
+    user = User.new
+    user.uid = 94022
+    user.mu_id = 4902
+    user.mu_name = "Jane"
+    exception = assert_raise(ActiveRecord::RecordInvalid) {user.save!}
+    assert exception.message.index("Mu link can't be blank")
+  end
+
+  test "validate presence of provider" do
+    user = User.new
+    user.uid = 94022
+    user.mu_id = 4902
+    user.mu_name = "Jane"
+    user.provider = nil
+    exception = assert_raise(ActiveRecord::RecordInvalid) {user.save!}
+    assert exception.message.index("Provider can't be blank")
+  end
+
+  test "import user Meetup groups" do
+    user = users(:joe)
+    assert_equal 2, user.groups.length, "Should have 2 MeetupGroup associations"
+
+    root_hash = new_group_hash
+    grps = root_hash["results"][0..1]
+    # 1 new group (mu_id 1523801)
+    # 1 already imported group (mu_id 521325), user is already a member
+    assert_equal 2, grps.length, "There should be 2 meetup groups in import payload"
+
+    imported = []
+    User.transaction do
+      imported = user.import_meetup_groups(grps)
+    end
+    assert_equal grps.length, imported.length, "Number imported should equal number in payload"
+
+    user.reload
+    assert_equal 3, user.groups.length, "Should have 3 (2 + 1 new) MeetupGroup associations"
+  end
+
 end
