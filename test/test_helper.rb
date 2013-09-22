@@ -160,4 +160,48 @@ class ActiveSupport::TestCase
     ActiveSupport::JSON.decode(json_s)
   end
 
+  def new_github_project_array
+    # source: http://developer.github.com/guides/getting-started/ - see Repositories
+    #   GET https://api.github.com/users/technoweenie/repos?type=owner
+    #   Note: only relevant attributes are kept in the following json payload
+    json_s = '[
+  {
+    "id": 9003920,
+    "name": "hash-to-conditions",
+    "full_name": "fun-ruby/hash-to-conditions",
+    "owner": {
+      "login": "fun-ruby",
+      "id": 4820953,
+      "type": "User"
+    },
+    "private": false,
+    "html_url": "https://github.com/fun-ruby/hash-to-conditions",
+    "description": "Transforms a given Hash into an Array condition, for use with ActiveRecord find() or where() methods ",
+    "fork": false,
+    "created_at": "2013-05-26T04:20:46Z",
+    "homepage": "",
+    "language": "Ruby"
+  },
+  {
+    "id": 9003929,
+    "name": "ProjectNightMeta",
+    "full_name": "fun-ruby/ProjectNightMeta",
+    "owner": {
+      "login": "fun-ruby",
+      "id": 4820953,
+      "type": "User"
+    },
+    "private": false,
+    "html_url": "https://github.com/fun-ruby/ProjectNightMeta",
+    "description": "A Project Night Project for organizing Project Nights",
+    "fork": true,
+    "created_at": "2013-08-31T17:39:45Z",
+    "homepage": null,
+    "language": "Ruby"
+  }
+]'
+
+    ActiveSupport::JSON.decode(json_s)
+  end
+
 end
