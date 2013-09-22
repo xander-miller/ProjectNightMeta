@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130920014302) do
+ActiveRecord::Schema.define(version: 20130922180548) do
 
   create_table "meetup_groups", force: true do |t|
     t.integer  "mu_id",             null: false
@@ -41,8 +41,8 @@ ActiveRecord::Schema.define(version: 20130920014302) do
     t.integer  "github_id"
     t.boolean  "private",     default: false
     t.boolean  "fork",        default: false
-    t.string   "name",                        null: false
-    t.string   "full_name"
+    t.string   "name"
+    t.string   "full_name",                   null: false
     t.string   "description"
     t.string   "language"
     t.string   "homepage"
@@ -51,7 +51,7 @@ ActiveRecord::Schema.define(version: 20130920014302) do
     t.datetime "updated_at"
   end
 
-  add_index "projects", ["name"], name: "index_projects_on_name", using: :btree
+  add_index "projects", ["full_name"], name: "index_projects_on_full_name", using: :btree
 
   create_table "user_groups", force: true do |t|
     t.integer  "user_mu_id",                 null: false
@@ -63,6 +63,17 @@ ActiveRecord::Schema.define(version: 20130920014302) do
 
   add_index "user_groups", ["group_mu_id"], name: "index_user_groups_on_group_mu_id", using: :btree
   add_index "user_groups", ["user_mu_id"], name: "index_user_groups_on_user_mu_id", using: :btree
+
+  create_table "user_projects", force: true do |t|
+    t.integer  "user_id",                       null: false
+    t.integer  "project_id",                    null: false
+    t.boolean  "is_maintainer", default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "user_projects", ["project_id"], name: "index_user_projects_on_project_id", using: :btree
+  add_index "user_projects", ["user_id"], name: "index_user_projects_on_user_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "",       null: false
