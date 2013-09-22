@@ -124,7 +124,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "has many projects" do
-    user = users(:joe)
+    user = users(:jane)
     assert_equal 1, user.projects.length, "Should have 1 Project associations"
   end
 
