@@ -13,6 +13,9 @@ class User < ActiveRecord::Base
   has_many :user_groups, class_name: 'UserGroup', foreign_key: :user_mu_id, primary_key: :mu_id
   has_many :groups, through: :user_groups, source: :group
 
+  has_many :user_projects, class_name: 'UserProject', foreign_key: :user_id, primary_key: :id
+  has_many :projects, through: :user_projects, source: :project
+
 
   # class methods
 
@@ -57,6 +60,20 @@ class User < ActiveRecord::Base
       group = MeetupGroup.import_with(hash)
       group.add(self)
       imported.push(group)
+    }
+    imported
+  end
+
+  def contributor_of?(project)
+    UserProject.has_entry?(self, project)
+  end
+
+  def import_github_projects(array)
+    imported = []
+    array.each { | hash |
+      project = Project.import_with(hash)
+      project.add_maintainer(self)
+      imported.push(project)
     }
     imported
   end

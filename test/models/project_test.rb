@@ -17,13 +17,14 @@ class ProjectTest < ActiveSupport::TestCase
     assert_equal h["language"], project.language, "language should match"
     assert_equal h["homepage"], project.homepage, "homepage should match"
     assert_equal h["html_url"], project.html_url, "html_url should match"
-    assert_equal h["created_at"], project.created_at, "created_at should match"
+    created_at = Time.zone.parse(h["created_at"])
+    assert_equal created_at, project.created_at, "created_at should match"
   end
 
-  test "validate presence of name" do
+  test "validate presence of full_name" do
     project = Project.new
     exception = assert_raise(ActiveRecord::RecordInvalid) {project.save!}
-    assert exception.message.index("Name can't be blank")
+    assert exception.message.index("Full name can't be blank")
   end
 
   test "save a built project" do
@@ -47,16 +48,26 @@ class ProjectTest < ActiveSupport::TestCase
 
     project = Project.build_with(h)
     exception = assert_raise(ActiveRecord::RecordInvalid) {project.save!}
-    assert_equal "Validation failed: Name has already been taken", exception.message
+    assert_equal "Validation failed: Full name has already been taken", exception.message
 
     projects = Project.where(["github_id=?", project.github_id])
     assert_equal 1, projects.length, "Should be one row"
   end
 
-  test "belongs to owner" do
-    project = projects(:foo)
-    user = users(:joe)
-    assert_equal user, project.owner, "Should belong to owner"
+  test "has contributors" do
+    project = projects(:jane_blog)
+    contributors = project.contributors
+    assert_equal 1, contributors.length, "Should have 1 contributor"
+    user = users(:jane)
+    assert_equal user, contributors.first, "Contributor is Jane"
+  end
+
+  test "has maintainers" do
+    project = projects(:jane_blog)
+    maintainers = project.maintainers
+    assert_equal 1, maintainers.length, "Should have 1 maintainer"
+    user = users(:jane)
+    assert_equal user, maintainers.first, "Maintainer is Jane"
   end
 
 end
