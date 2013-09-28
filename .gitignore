@@ -21,11 +21,11 @@
 # don't track config/database.yml - developer-specific, copied from .yml.dbname file
 config/database.yml
 
-# don't track config/initializers/devise.rb - it contains meetup secret key-value
+# don't track config/initializers/omniauth.rb - it contains meetup secret key-value
 #
-# make copy of config/initializers/devise.rb.template then add secret values
+# make copy of config/initializers/omniauth.rb.template then add secret values
 #
-config/initializers/devise.rb
+config/initializers/omniauth.rb
 
 # don't track tmp/
 tmp/*

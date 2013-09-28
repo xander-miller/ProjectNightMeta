@@ -41,7 +41,7 @@ gem 'bootstrap-sass-rails'
 #User Authentication and OAuth support
 gem 'omniauth'
 gem 'omniauth-meetup'
-gem 'devise'
+gem "octokit", "~> 2.0"
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

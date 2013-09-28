@@ -2,8 +2,6 @@
 <html>
 <head>
   <title>ProjectNightMeta</title>
-  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-  
   <%= csrf_meta_tags %>
 </head>
 <body>
@@ -27,6 +25,9 @@
       </div>
     </div>
   </div>
+<% if session[:mu_id] %>
+<%= session[:mu_name] %> (<%= link_to 'sign out', '/signout' %>)
+<% end %>
   <div class="container">
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
