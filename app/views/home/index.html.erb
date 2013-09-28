@@ -1,2 +1,2 @@
-<h1>Hello!</h1>
-<p>World</p>
+<h1>Hello <%= session[:mu_id] ? session[:mu_name] : 'World' %></h1>
+
