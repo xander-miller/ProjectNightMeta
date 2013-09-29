@@ -30,7 +30,7 @@
           <li><a href="/about">About</a></li>
           <li class="signin-nav-gap"> &nbsp; </li>
           <li><%- if session[:mu_id] -%>
-      <%= session[:mu_name] %> (<%= link_to 'Sign out', '/signout' %>)
+      <%= link_to session[:mu_name], '/signout', {title: 'Sign out'} -%>
     <%- else -%>
       <%= link_to 'Sign in', '/login' %>
     <%- end -%></li>
