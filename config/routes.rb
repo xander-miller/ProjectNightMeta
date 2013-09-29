@@ -8,6 +8,7 @@ ProjectNightMeta::Application.routes.draw do
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
+  get '/about'    => 'home#about'
   get '/login'    => 'sessions#index'
   get '/signout'  => 'sessions#signout'
   get '/auth/:provider/callback' => 'sessions#create'
