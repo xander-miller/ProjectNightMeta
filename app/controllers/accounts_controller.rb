@@ -3,6 +3,7 @@ class AccountsController < ApplicationController
 
   # GET /accounts
   def index
+    @noob = params["new"] == "true"
     @title = "Account Settings"
   end
 

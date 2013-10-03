@@ -1,4 +1,11 @@
 <h1><%= @title %></h1>
+<div id="account_intro">
+  <% if @noob %>
+<p>New User login for first time - provide instruction to complete profile</p>
+  <% else %>
+<p>Return User - provide alternative text</p>
+  <% end %>
+</div>
 
 <div id="profile">
   <h2>Profile</h2>

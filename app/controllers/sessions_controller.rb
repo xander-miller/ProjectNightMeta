@@ -7,11 +7,19 @@ class SessionsController < ApplicationController
 
   # GET /auth/:provider/callback
   def create
-    user = User.find_or_create_from_auth_hash(omniauth_hash)
+    hash = omniauth_hash
+    first_time = false == User.exists?(["provider=? and mu_id=?",
+      hash["provider"], hash["extra"]["raw_info"]["id"]])
+
+    user = User.find_or_create_from_auth_hash(hash)
     session[:mu_id] = user.mu_id
     session[:mu_name] = user.mu_name
 
-    redirect_to controller: 'home'
+    if first_time
+      redirect_to "/account?new=true"
+    else
+      redirect_to "/"
+    end
   end
 
   # GET /signout
@@ -19,7 +27,7 @@ class SessionsController < ApplicationController
     session[:mu_id] = nil
     session[:mu_name] = nil
 
-    redirect_to controller: 'home'
+    redirect_to "/"
   end
 
 
