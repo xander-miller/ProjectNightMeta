@@ -61,9 +61,11 @@ class User < ActiveRecord::Base
   def import_meetup_groups(array)
     imported = []
     array.each { | hash |
-      group = MeetupGroup.import_with(hash)
-      group.add(self)
-      imported.push(group)
+      if hash["visibility"].downcase == "public"
+        group = MeetupGroup.import_with(hash)
+        group.add(self)
+        imported.push(group)
+      end
     }
     imported
   end
