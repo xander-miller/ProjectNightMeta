@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130922180548) do
+ActiveRecord::Schema.define(version: 20131003041200) do
 
   create_table "meetup_groups", force: true do |t|
     t.integer  "mu_id",             null: false
@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 20130922180548) do
     t.string   "city"
     t.string   "state"
     t.string   "country"
-    t.string   "description"
+    t.text     "description"
     t.string   "urlname"
     t.string   "visibility"
     t.string   "who"
@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 20130922180548) do
     t.datetime "updated_at"
   end
 
+  add_index "meetup_groups", ["city"], name: "index_meetup_groups_on_city", using: :btree
   add_index "meetup_groups", ["mu_id"], name: "index_meetup_groups_on_mu_id", using: :btree
   add_index "meetup_groups", ["mu_name"], name: "index_meetup_groups_on_mu_name", using: :btree
 

@@ -41,6 +41,7 @@ gem 'bootstrap-sass-rails'
 #User Authentication and OAuth support
 gem 'omniauth'
 gem 'omniauth-meetup'
+gem 'ruby_meetup2'
 gem "octokit", "~> 2.0"
 
 group :doc do
