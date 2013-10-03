@@ -13,6 +13,11 @@ ProjectNightMeta::Application.routes.draw do
   get '/signout'  => 'sessions#signout'
   get '/auth/:provider/callback' => 'sessions#create'
 
+  get  '/account'                 => 'accounts#index'
+  post '/account/update/profile'  => 'accounts#update_profile'
+  post '/account/sync/groups'     => 'accounts#sync_groups'
+  post '/account/sync/projects'   => 'accounts#sync_projects'
+
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
 

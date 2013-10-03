@@ -29,20 +29,23 @@
         <ul class="nav navbar-nav">
           <li><a href="/about">About</a></li>
           <li class="signin-nav-gap"> &nbsp; </li>
-          <li><%- if session[:mu_id] -%>
-      <%= link_to session[:mu_name], '/signout', {title: 'Sign out'} -%>
-    <%- else -%>
-      <%= link_to 'Sign in', '/login' %>
-    <%- end -%></li>
+          <%- if session[:mu_id] -%>
+          <li><%= link_to 'Settings', '/account', {title: 'My account settings'} -%></li>
+          <li><%= link_to "#{session[:mu_name]} (sign out)", '/signout' -%></li>
+          <%- else -%>
+          <li><%= link_to 'Sign in', '/login' %></li>
+          <%- end -%>
         </ul>
       </div><!--/.nav-collapse -->
     </div>
   </div>
-
   <div class="container">
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
     <%= yield %>
+    <div class="footer">
+    <p>&nbsp;</p>
+    </div>
   </div><!-- /.container -->
 
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
