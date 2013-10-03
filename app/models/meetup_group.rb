@@ -67,4 +67,9 @@ class MeetupGroup < ActiveRecord::Base
     self.mu_photo_id = photo["photo_id"]
   end
 
+  def location
+    return city if state.blank?
+    "#{city}, #{state}"
+  end
+
 end
