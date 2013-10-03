@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130922180548) do
+ActiveRecord::Schema.define(version: 20131003031856) do
 
   create_table "meetup_groups", force: true do |t|
     t.integer  "mu_id",             null: false
@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 20130922180548) do
     t.string   "city"
     t.string   "state"
     t.string   "country"
-    t.string   "description"
+    t.text     "description"
     t.string   "urlname"
     t.string   "visibility"
     t.string   "who"
