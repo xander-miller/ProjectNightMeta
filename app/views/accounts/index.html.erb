@@ -39,8 +39,7 @@ notifications and announcements about our services.
   <% @user.groups.each do | group | %>
   <li>
     <div class="group-img">
-      <img src="<%= group.mu_thumb_link %>"/>
-      <a href="<%= group.mu_link %>"><%= group.mu_name %></a>
+      <a href="/groups/<%= group.urlname %>"><img src="<%= group.mu_thumb_link %>"/> <%= group.mu_name %></a>
     </div>
   </li>
   <% end %>
