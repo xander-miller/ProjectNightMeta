@@ -8,15 +8,12 @@ class SessionsController < ApplicationController
   # GET /auth/:provider/callback
   def create
     hash = omniauth_hash
-    first_time = false == User.exists?(["provider=? and mu_id=?",
-      hash["provider"], hash["extra"]["raw_info"]["id"]])
-
     user = User.find_or_create_from_auth_hash(hash)
     session[:mu_id] = user.mu_id
     session[:mu_name] = user.mu_name
 
-    if first_time
-      redirect_to "/account?new=true"
+    if user.should_sync
+      redirect_to "/account"
     else
       redirect_to "/"
     end
@@ -24,9 +21,7 @@ class SessionsController < ApplicationController
 
   # GET /signout
   def signout
-    session[:mu_id] = nil
-    session[:mu_name] = nil
-
+    clear_session
     redirect_to "/"
   end
 

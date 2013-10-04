@@ -18,6 +18,9 @@ ProjectNightMeta::Application.routes.draw do
   post '/account/sync/groups'     => 'accounts#sync_groups'
   post '/account/sync/projects'   => 'accounts#sync_projects'
 
+  get  '/groups'        => 'groups#index'
+  get  '/groups/:id'    => 'groups#show'
+
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
 

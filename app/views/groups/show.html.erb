@@ -1,0 +1,33 @@
+<h1><%= @group.mu_name %></h1>
+
+<div class="group-img">
+  <img src="<%= @group.mu_thumb_link %>"/>
+  <a href="<%= @group.mu_link %>">Meetup page</a>
+</div>
+
+<div class="events">
+  <h2>Events</h2>
+
+  <p>Show upcoming event with RSVP'd members and projects</p>
+
+  <p>List future events</p>
+</div>
+
+<div class="members">
+  <h2>Members</h2>
+
+  <p>Listing of members and projects</p>
+
+  <ul>
+  <% @group.users.each do | user | %>
+  <li>
+    <div class="user-img">
+      <img src="<%= user.mu_thumb_link %>"/>
+      <%= user.mu_name %> <a href="<%= user.mu_link %>">Meetup page</a>
+    </div>
+  </li>
+  <% end %>
+  </ul>
+
+</div>
+

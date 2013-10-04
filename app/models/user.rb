@@ -84,4 +84,8 @@ class User < ActiveRecord::Base
     imported
   end
 
+  def should_sync
+    user_groups.blank?
+  end
+
 end
