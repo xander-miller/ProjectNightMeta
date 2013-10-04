@@ -6,21 +6,15 @@
 
 <div class="groups">
   <h2>Meetup Groups</h2>
+  <ul>
   <% @groups.each do | group | %>
-  <div class="ea-group">
+  <li>
     <div class="group-img">
       <img src="<%= group.mu_thumb_link %>"/>
+      <a href="<%= group.mu_link %>"><%= group.mu_name %></a>
     </div>
-    <div class="group-info">
-      <ul>
-      <li><a href="<%= group.mu_link %>"><%= group.mu_name %></a></li>
-      <li><em><%= group.location %></em></li>
-      </ul>
-    </div>
-    <div class="group-desc">
-    <%=raw group.description %>
-    </div>
-  </div>
+  </li>
   <% end %>
+  </ul>
 </div>
 

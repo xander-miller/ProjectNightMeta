@@ -3,7 +3,6 @@ class AccountsController < ApplicationController
 
   # GET /accounts
   def index
-    @noob = params["new"] == "true"
     @title = "Account Settings"
   end
 
@@ -28,8 +27,9 @@ class AccountsController < ApplicationController
     redirect_to "/account"
     rescue Exception => e
       if e.message.index('401')
-        flash[:notice] = "We may need authorize this action with Meetup.com"
-        redirect_to "/auth/meetup/"
+        clear_session
+        flash[:notice] = "Your session may have expired. Please login to resume access."
+        redirect_to "/login"
         return
       end
       flash[:alert] = e.message

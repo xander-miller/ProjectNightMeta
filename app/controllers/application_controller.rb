@@ -22,4 +22,10 @@ class ApplicationController < ActionController::Base
       @user
     end
 
+    def clear_session
+      # instead of reset_session
+      session[:mu_id] = nil
+      session[:mu_name] = nil
+    end
+
 end

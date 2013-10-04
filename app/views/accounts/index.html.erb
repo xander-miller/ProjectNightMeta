@@ -1,9 +1,9 @@
 <h1><%= @title %></h1>
 <div id="account_intro">
-  <% if @noob %>
-<p>New User login for first time - provide instruction to complete profile</p>
+  <% if @user.should_sync %>
+<p>User has not sync Meetup groups - provide instruction to complete profile</p>
   <% else %>
-<p>Return User - provide alternative text</p>
+<p>User has already sync'd groups - provide alternative text</p>
   <% end %>
 </div>
 
@@ -35,11 +35,16 @@ notifications and announcements about our services.
   </div>
 
   <div class="groups">
+  <ul>
   <% @user.groups.each do | group | %>
-    <div class="ea-group">
-    <img src="<%= group.mu_thumb_link %>"/> <a href="<%= group.mu_link %>"><%= group.mu_name %></a>
+  <li>
+    <div class="group-img">
+      <img src="<%= group.mu_thumb_link %>"/>
+      <a href="<%= group.mu_link %>"><%= group.mu_name %></a>
     </div>
+  </li>
   <% end %>
+  </ul>
   </div>
 </div>
 
