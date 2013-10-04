@@ -9,6 +9,13 @@ class MeetupGroup < ActiveRecord::Base
 
   # class methods
 
+  def self.find_by_muid_or_urlname(id_or_name)
+    if /\D/.match(id_or_name)
+      return find_by_urlname(id_or_name)
+    end
+    find_by_mu_id(id_or_name)
+  end
+
   def self.build_with(meetup_group_hash)
     group = new()
     group.refresh_with(meetup_group_hash)
