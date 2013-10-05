@@ -40,13 +40,12 @@ class MeetupGroup < ActiveRecord::Base
 
   def add(user)
     return user if user.member_of?(self)
-
-    assoc = UserGroup.new
-    assoc.user = user
-    assoc.group = self
-    assoc.save!
-
+    user.groups << self
     user
+  end
+
+  def remove(user)
+    user.groups.delete(self)
   end
 
   def refresh_with(meetup_group_hash)
