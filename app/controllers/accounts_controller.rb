@@ -19,10 +19,7 @@ class AccountsController < ApplicationController
     hash = get_user_meetup_groups
 
     group_mu_ids = current_user.groups.collect { | group | group.mu_id }
-puts group_mu_ids
     import_groups(hash["results"], group_mu_ids)
-puts "groups to delete"
-puts group_mu_ids
 
     # user has left these groups - remove UserGroup association
     unless group_mu_ids.blank?
@@ -75,8 +72,11 @@ puts group_mu_ids
             count += 1
             group_mu_ids.delete(sync_a.first.mu_id)
           end
-        rescue
+        rescue Exception => e
           fail_count += 1
+          logger.info "import_groups fail count: #{fail_count}"
+          logger.info e.message
+          logger.info e.backtrace.join("\n")
         end
       end
 
