@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class MeetupGroupTest < ActiveSupport::TestCase
-  fixtures :meetup_groups
+  fixtures :meetup_groups, :users
 
   test "a build new group" do
     root_hash = new_group_hash
@@ -85,6 +85,35 @@ class MeetupGroupTest < ActiveSupport::TestCase
     group.mu_name = "Smalltalk"
     exception = assert_raise(ActiveRecord::RecordInvalid) {group.save!}
     assert exception.message.index("Mu link can't be blank")
+  end
+
+  test "add user" do
+    group = meetup_groups(:foojs)
+    assert_equal 1, group.users.length, "Should have 1 member"
+    jane = users(:jane)
+    assert_equal 0, jane.groups.length, "Should have 0 groups"
+
+    group.add(jane)
+    group.reload
+    assert_equal 2, group.users.length, "Should have 2 members"
+    assert_equal 1, jane.groups.length, "Should have 1 group"
+  end
+
+  test "remove user" do
+    group = meetup_groups(:foojs)
+    assert_equal 1, group.users.length, "Should have 1 member"
+    joe = users(:joe)
+    assert_equal 2, joe.groups.length, "Should have 2 groups"
+    groups = MeetupGroup.all
+    assert_equal 2, groups.length, "Should have total 2 groups"
+
+    group.remove(joe)
+    group.reload
+    assert_equal 0, group.users.length, "Should have 0 member"
+    joe.reload
+    assert_equal 1, joe.groups.length, "Should have 1 group"
+    groups.reload
+    assert_equal 2, groups.length, "Should have total 2 groups"
   end
 
 end
