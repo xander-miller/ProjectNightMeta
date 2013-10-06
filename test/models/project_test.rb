@@ -9,6 +9,7 @@ class ProjectTest < ActiveSupport::TestCase
     project = Project.build_with(h)
 
     assert_equal h["id"], project.github_id, "github_id should match"
+    assert_equal h["owner"]["id"], project.owner_id, "owner_id should match"
     assert_equal h["private"], project.private, "private should match"
     assert_equal h["fork"], project.fork, "fork should match"
     assert_equal h["name"], project.name, "name should match"

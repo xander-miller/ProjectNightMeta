@@ -52,6 +52,7 @@ class Project < ActiveRecord::Base
     h = github_repo_hash
 
     self.github_id = h["id"]
+    self.owner_id = h["owner"]["id"]
     self.private = h["private"]
     self.fork = h["fork"]
     self.name = h["name"]
