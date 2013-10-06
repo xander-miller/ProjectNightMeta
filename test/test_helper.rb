@@ -19,7 +19,7 @@ class ActiveSupport::TestCase
       "provider"=>"meetup",
       "uid"=>12345,
       "info"=> {
-        "id"=>111,
+        "id"=>12345,
         "name"=>"elvis",
         "photo_url"=>"http://photos3.meetupstatic.com/photos/member_pic_111.jpeg"
         },
@@ -43,7 +43,7 @@ class ActiveSupport::TestCase
           "city"=>"Memphis",
           "country"=>"us",
           "visited"=>1325001005000,
-          "id"=>111,
+          "id"=>12345,
           "topics"=>[],
           "joined"=>1147652858000,
           "name"=>"elvis",

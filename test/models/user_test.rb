@@ -144,4 +144,11 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 2, user.projects.length, "Should have 2 new Project associations"
   end
 
+  test "has many accesses" do
+    user = users(:jane)
+    accesses = user.accesses
+    assert_equal 1, accesses.length, "user has many accesses"
+    assert_equal "github", accesses.first.provider, "first access provider is github"
+  end
+
 end

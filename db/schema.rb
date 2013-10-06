@@ -11,7 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131003041200) do
+ActiveRecord::Schema.define(version: 20131005203911) do
+
+  create_table "accesses", force: true do |t|
+    t.integer  "user_id",                           null: false
+    t.string   "provider",       default: "meetup"
+    t.integer  "uid",                               null: false
+    t.string   "raw_name",                          null: false
+    t.string   "raw_link"
+    t.string   "raw_photo_link"
+    t.string   "token"
+    t.string   "refresh_token"
+    t.integer  "expires_at"
+    t.boolean  "expires",        default: true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "accesses", ["provider"], name: "index_accesses_on_provider", using: :btree
+  add_index "accesses", ["uid"], name: "index_accesses_on_uid", using: :btree
+  add_index "accesses", ["user_id"], name: "index_accesses_on_user_id", using: :btree
 
   create_table "meetup_groups", force: true do |t|
     t.integer  "mu_id",             null: false

@@ -3,6 +3,8 @@ class User < ActiveRecord::Base
   validates_presence_of   :uid, :mu_id, :mu_name, :mu_link, :provider
   validates_uniqueness_of :mu_id
 
+  has_many :accesses, class_name: 'Access', foreign_key: :user_id, primary_key: :id
+
   has_many :user_groups, class_name: 'UserGroup', foreign_key: :user_mu_id, primary_key: :mu_id
   has_many :groups, through: :user_groups, source: :group
 
