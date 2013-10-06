@@ -58,7 +58,7 @@ class AccountsController < ApplicationController
     def get_user_meetup_groups
       client = RubyMeetup::AuthenticatedClient.new
       client.access_token = current_user.authentication_token
-      json_s = client.get_path("/2/groups", {:member_id => current_user.mu_id})
+      json_s = client.get_path("/2/groups", {:member_id => current_user.uid})
       ActiveSupport::JSON.decode(json_s) # a hash
     end
 

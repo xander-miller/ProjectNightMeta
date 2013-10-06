@@ -8,6 +8,14 @@ class Access < ActiveRecord::Base
 
   # class methods
 
+  def self.find_or_create_from_auth_hash(user, omniauth_hash)
+    h = omniauth_hash
+    access = find_or_initialize_by({provider: h["provider"], uid: h["uid"]})
+    access.grant_or_refresh_with(user, h)
+    access.save!
+    access
+  end
+
   def self.grant_with(user, omniauth_hash)
     access = new()
     access.grant_or_refresh_with(user, omniauth_hash)
@@ -44,8 +52,11 @@ class Access < ActiveRecord::Base
       self.token = creds["token"]
       user.authentication_token = token
       self.refresh_token = creds["refresh_token"]
+      user.mu_refresh_token = refresh_token
       self.expires_at = creds["expires_at"]
+      user.mu_expires_at = expires_at
       self.expires = creds["expires"]
+      user.mu_expires = expires
 
       raw_info = h["extra"]["raw_info"]
       user.mu_name = raw_info["name"]
