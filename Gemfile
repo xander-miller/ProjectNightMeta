@@ -45,7 +45,7 @@ gem 'omniauth'
 gem 'omniauth-meetup'
 gem 'omniauth-github'
 gem 'ruby_meetup2'
-gem "octokit", "~> 2.0"
+gem 'github-v3-api'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
