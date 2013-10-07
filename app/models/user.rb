@@ -11,6 +11,10 @@ class User < ActiveRecord::Base
   has_many :user_projects, class_name: 'UserProject', foreign_key: :user_id, primary_key: :id
   has_many :projects, through: :user_projects, source: :project
 
+  has_many :visible_user_projects, -> { where('visible = true') },
+    class_name: 'UserProject', foreign_key: :user_id, primary_key: :id
+  has_many :visible_projects, through: :visible_user_projects, source: :project
+
 
   # class methods
 
@@ -62,6 +66,7 @@ class User < ActiveRecord::Base
 
   def import_github_project(hash)
     return nil if hash["private"]
+    return nil unless hash["owner"]["id"] == github_access.uid
     project = Project.import_with(hash)
     project.add_maintainer(self)
     project
@@ -69,6 +74,9 @@ class User < ActiveRecord::Base
 
   def should_sync
     user_groups.blank?
+  end
+  def should_sync_github
+    github_access.nil?
   end
 
   def github_access

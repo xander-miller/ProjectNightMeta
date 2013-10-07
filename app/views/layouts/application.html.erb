@@ -32,8 +32,9 @@
           <li class="signin-nav-gap"> &nbsp; </li>
           <%- if session[:mu_uid] -%>
           <li><%= link_to 'My Groups', '/user/groups', {title: 'My Meetup groups'} -%></li>
-          <li><%= link_to 'Settings', '/account', {title: 'My account settings'} -%></li>
-          <li><%= link_to "#{session[:mu_name]} (sign out)", '/signout' -%></li>
+          <li><%= link_to 'My Projects', '/user/projects', {title: 'My projects'} -%></li>
+          <li><%= link_to 'Settings', '/user/account', {title: 'My account settings'} -%></li>
+          <li><%= link_to "#{session[:mu_name]} (log out)", '/user/logout' -%></li>
           <%- else -%>
           <li><%= link_to 'Sign in', '/login' %></li>
           <%- end -%>

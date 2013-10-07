@@ -1,9 +1,15 @@
 <h1><%= @title %></h1>
 
+<div id="groups_intro">
+  <% if @user.should_sync %>
+<p>User has not sync Meetup groups - provide instruction to sync</p>
+  <% end %>
+</div>
+
 <div id="groups">
   <div class="group-sync">
-  <%= form_tag "/account/sync/groups", {id: "sync_group_form"} do %>
-  <input id="sync_group_btn" type="submit" value="Sync now"/>
+  <%= form_tag "/user/account/sync/groups", {id: "sync_group_form"} do %>
+  <input id="sync_group_btn" type="submit" value="Sync Meetup groups now"/>
   <% end %>
   </div>
 

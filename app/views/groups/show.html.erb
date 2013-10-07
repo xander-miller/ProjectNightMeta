@@ -25,6 +25,13 @@
       <img src="<%= user.mu_thumb_link %>"/>
       <%= user.mu_name %> <a href="<%= user.mu_link %>">Meetup page</a>
     </div>
+    <div class="user-projects">
+      <ul>Projects
+      <% user.visible_projects.each do | project | %>
+      <li><a title="<%= project.description %>"><%= project.full_name %></a></li>
+      <% end %>
+      </ul>
+    </div>
   </li>
   <% end %>
   </ul>

@@ -3,7 +3,7 @@ class UserGroupsController < ApplicationController
 
   # GET /user/groups
   def index
-    @title = "My Meetup Goups"
+    @title = "My Meetup Groups"
   end
 
 end

@@ -76,4 +76,8 @@ class Project < ActiveRecord::Base
     a.collect { | each | each.user }
   end
 
+  def is_github
+    !github_id.blank?
+  end
+
 end

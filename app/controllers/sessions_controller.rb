@@ -12,11 +12,11 @@ class SessionsController < ApplicationController
     if 'meetup' == params[:provider]
       user = create_meetup
       if user.should_sync
-        new_path = "/account"
+        new_path = "/user/groups"
       end
     elsif 'github' == params[:provider]
       create_github
-      new_path = "/account"
+      new_path = "/user/projects"
     else
       flash[:alert] = "Cannot accept authorization from #{params[:provider]}"
       redirect_to "/login"

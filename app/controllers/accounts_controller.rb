@@ -1,12 +1,12 @@
 class AccountsController < ApplicationController
   before_filter :check_authorized
 
-  # GET /accounts
+  # GET /user/accounts
   def index
     @title = "Account Settings"
   end
 
-  # POST /accounts/update/profile
+  # POST /user/accounts/update/profile
   def update_profile
     current_user.email = params[:email]
     current_user.save!
@@ -14,7 +14,7 @@ class AccountsController < ApplicationController
     redirect_to "/account"
   end
 
-  # POST /accounts/sync/groups
+  # POST /user/accounts/sync/groups
   def sync_groups
     hash = get_user_meetup_groups
 
@@ -46,7 +46,7 @@ class AccountsController < ApplicationController
       redirect_to "/user/groups"
   end
 
-  # POST /accounts/sync/projects
+  # POST /user/accounts/sync/projects
   def sync_projects
     access = current_user.github_access
     unless access
@@ -54,8 +54,8 @@ class AccountsController < ApplicationController
       return
     end
 
-    client = Octokit::Client.new :access_token => access.token
-    repos = client.user.rels[:repos].get.data
+    client = GitHubV3API.new(access.token)
+    repos = client.repos.list
 
     project_ids = current_user.projects.collect { | ea | ea.github_id }
     project_ids.compact!
@@ -71,7 +71,7 @@ class AccountsController < ApplicationController
       end
     end
 
-    redirect_to "/account"
+    redirect_to "/user/projects"
 
     rescue Exception => e
       if e.message.index('401')
@@ -81,7 +81,7 @@ class AccountsController < ApplicationController
       flash[:alert] = e.message
       logger.info e.message
       logger.info e.backtrace.join("\n")
-      redirect_to "/account"
+      redirect_to "/user/projects"
   end
 
 
