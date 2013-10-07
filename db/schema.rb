@@ -11,7 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131003041200) do
+ActiveRecord::Schema.define(version: 20131007030351) do
+
+  create_table "accesses", force: true do |t|
+    t.integer  "user_id",                           null: false
+    t.string   "provider",       default: "meetup"
+    t.integer  "uid",                               null: false
+    t.string   "raw_name",                          null: false
+    t.string   "raw_link"
+    t.string   "raw_photo_link"
+    t.string   "token"
+    t.string   "refresh_token"
+    t.integer  "expires_at"
+    t.boolean  "expires",        default: true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "accesses", ["provider"], name: "index_accesses_on_provider", using: :btree
+  add_index "accesses", ["uid"], name: "index_accesses_on_uid", using: :btree
+  add_index "accesses", ["user_id"], name: "index_accesses_on_user_id", using: :btree
 
   create_table "meetup_groups", force: true do |t|
     t.integer  "mu_id",             null: false
@@ -50,9 +69,11 @@ ActiveRecord::Schema.define(version: 20131003041200) do
     t.string   "html_url"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "owner_id"
   end
 
   add_index "projects", ["full_name"], name: "index_projects_on_full_name", using: :btree
+  add_index "projects", ["owner_id"], name: "index_projects_on_owner_id", using: :btree
 
   create_table "user_groups", force: true do |t|
     t.integer  "user_mu_id",                 null: false
@@ -71,33 +92,29 @@ ActiveRecord::Schema.define(version: 20131003041200) do
     t.boolean  "is_maintainer", default: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "visible",       default: false
   end
 
   add_index "user_projects", ["project_id"], name: "index_user_projects_on_project_id", using: :btree
   add_index "user_projects", ["user_id"], name: "index_user_projects_on_user_id", using: :btree
 
   create_table "users", force: true do |t|
-    t.string   "email",                  default: "",       null: false
-    t.string   "encrypted_password",     default: "",       null: false
-    t.string   "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0
+    t.string   "email",                default: "",       null: false
+    t.integer  "sign_in_count",        default: 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "provider",               default: "meetup"
-    t.integer  "uid",                                       null: false
-    t.integer  "mu_id",                                     null: false
-    t.string   "mu_name",                                   null: false
-    t.string   "mu_link",                                   null: false
+    t.string   "provider",             default: "meetup"
+    t.integer  "uid",                                     null: false
+    t.string   "mu_name",                                 null: false
+    t.string   "mu_link",                                 null: false
     t.string   "authentication_token"
     t.string   "mu_refresh_token"
     t.integer  "mu_expires_at"
-    t.boolean  "mu_expires",             default: true
+    t.boolean  "mu_expires",           default: true
     t.string   "mu_photo_link"
     t.string   "mu_highres_link"
     t.string   "mu_thumb_link"
@@ -108,7 +125,7 @@ ActiveRecord::Schema.define(version: 20131003041200) do
 
   add_index "users", ["city"], name: "index_users_on_city", using: :btree
   add_index "users", ["country"], name: "index_users_on_country", using: :btree
-  add_index "users", ["mu_id"], name: "index_users_on_mu_id", using: :btree
-  add_index "users", ["mu_name"], name: "index_users_on_mu_name", using: :btree
+  add_index "users", ["provider"], name: "index_users_on_provider", using: :btree
+  add_index "users", ["uid"], name: "index_users_on_uid", using: :btree
 
 end

@@ -1,11 +1,4 @@
 <h1><%= @title %></h1>
-<div id="account_intro">
-  <% if @user.should_sync %>
-<p>User has not sync Meetup groups - provide instruction to complete profile</p>
-  <% else %>
-<p>User has already sync'd groups - provide alternative text</p>
-  <% end %>
-</div>
 
 <div id="profile">
   <h2>Profile</h2>
@@ -14,7 +7,7 @@
   </div>
 
   <div class="profile-info">
-  <%= form_tag "/account/update/profile", {id: "profile_form"} do %>
+  <%= form_tag "/user/account/update/profile", {id: "profile_form"} do %>
   <p>Email address<br/>
   <input class="profile-info-field" type="text" name="email" size="30" maxlength="255" placeholder="you@domain.com" value="<%= @user.email %>"/>
   </p>
@@ -26,33 +19,3 @@ notifications and announcements about our services.
   </div>
 </div>
 
-<div id="groups">
-  <h2>Meetup Groups</h2>
-  <div class="group-sync">
-  <%= form_tag "/account/sync/groups", {id: "sync_group_form"} do %>
-  <input id="sync_group_btn" type="submit" value="Sync now"/>
-  <% end %>
-  </div>
-
-  <div class="groups">
-  <ul>
-  <% @user.groups.each do | group | %>
-  <li>
-    <div class="group-img">
-      <a href="/groups/<%= group.urlname %>"><img src="<%= group.mu_thumb_link %>"/> <%= group.mu_name %></a>
-    </div>
-  </li>
-  <% end %>
-  </ul>
-  </div>
-</div>
-
-<div id="projects">
-  <h2>GitHub Projects - TODO</h2>
-  <div class="project-sync">
-  <%= form_tag "/account/sync/projects", {id: "sync_project_form"} do %>
-  <input id="sync_project_btn" type="submit" value="Sync now"/>
-  <% end %>
-  </div>
-
-</div>

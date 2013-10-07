@@ -1,12 +1,12 @@
 class AccountsController < ApplicationController
   before_filter :check_authorized
 
-  # GET /accounts
+  # GET /user/accounts
   def index
     @title = "Account Settings"
   end
 
-  # POST /accounts/update/profile
+  # POST /user/accounts/update/profile
   def update_profile
     current_user.email = params[:email]
     current_user.save!
@@ -14,27 +14,24 @@ class AccountsController < ApplicationController
     redirect_to "/account"
   end
 
-  # POST /accounts/sync/groups
+  # POST /user/accounts/sync/groups
   def sync_groups
     hash = get_user_meetup_groups
 
     group_mu_ids = current_user.groups.collect { | group | group.mu_id }
-puts group_mu_ids
     import_groups(hash["results"], group_mu_ids)
-puts "groups to delete"
-puts group_mu_ids
 
     # user has left these groups - remove UserGroup association
     unless group_mu_ids.blank?
       MeetupGroup.transaction do
         group_mu_ids.each do | mu_id |
           group = MeetupGroup.find_by_mu_id(mu_id)
-          group.remove(current_user)
+          group.remove(current_user) if group
         end
       end
     end
 
-    redirect_to "/account"
+    redirect_to "/user/groups"
 
     rescue Exception => e
       if e.message.index('401')
@@ -46,13 +43,45 @@ puts group_mu_ids
       flash[:alert] = e.message
       logger.info e.message
       logger.info e.backtrace.join("\n")
-      redirect_to "/account"
+      redirect_to "/user/groups"
   end
 
-  # POST /accounts/sync/projects
+  # POST /user/accounts/sync/projects
   def sync_projects
+    access = current_user.github_access
+    unless access
+      redirect_to "/auth/github"
+      return
+    end
 
-    redirect_to "/account"
+    client = GitHubV3API.new(access.token)
+    repos = client.repos.list
+
+    project_ids = current_user.projects.collect { | ea | ea.github_id }
+    project_ids.compact!
+    import_projects(repos, project_ids)
+
+    # user may remove/make private these projects - remove UserProject association
+    unless project_ids.blank?
+      Project.transaction do
+        project_ids.each do | gid |
+          project = Project.find_by_github_id(gid)
+          project.remove(current_user) if project
+        end
+      end
+    end
+
+    redirect_to "/user/projects"
+
+    rescue Exception => e
+      if e.message.index('401')
+        redirect_to "/auth/github"
+        return
+      end
+      flash[:alert] = e.message
+      logger.info e.message
+      logger.info e.backtrace.join("\n")
+      redirect_to "/user/projects"
   end
 
 
@@ -61,7 +90,7 @@ puts group_mu_ids
     def get_user_meetup_groups
       client = RubyMeetup::AuthenticatedClient.new
       client.access_token = current_user.authentication_token
-      json_s = client.get_path("/2/groups", {:member_id => current_user.mu_id})
+      json_s = client.get_path("/2/groups", {:member_id => current_user.uid})
       ActiveSupport::JSON.decode(json_s) # a hash
     end
 
@@ -71,12 +100,17 @@ puts group_mu_ids
       groups_a.each do | hash |
         begin
           MeetupGroup.transaction do
-            sync_a = current_user.import_meetup_groups([hash])
-            count += 1
-            group_mu_ids.delete(sync_a.first.mu_id)
+            group = current_user.import_meetup_group(hash)
+            unless group.blank?
+              count += 1
+              group_mu_ids.delete(group.mu_id)
+            end
           end
-        rescue
+        rescue Exception => e
           fail_count += 1
+          logger.info "import_groups fail count: #{fail_count}"
+          logger.info e.message
+          logger.info e.backtrace.join("\n")
         end
       end
 
@@ -85,6 +119,34 @@ puts group_mu_ids
       end
       if fail_count > 0
         flash[:alert] = "Failed to sync #{fail_count} group(s)."
+      end
+    end
+
+    def import_projects(project_a, project_ids)
+      count = 0
+      fail_count = 0
+      project_a.each do | repo |
+        begin
+          Project.transaction do
+            project = current_user.import_github_project(repo)
+            unless project.blank?
+              count += 1
+              project_ids.delete(project.github_id)
+            end
+          end
+        rescue Exception => e
+          fail_count += 1
+          logger.info "import_projects fail count: #{fail_count}"
+          logger.info e.message
+          logger.info e.backtrace.join("\n")
+        end
+      end
+
+      if count > 0
+        flash[:notice] = "Synced #{count} project(s)."
+      end
+      if fail_count > 0
+        flash[:alert] = "Failed to sync #{fail_count} project(s)."
       end
     end
 

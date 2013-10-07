@@ -4,7 +4,6 @@ joe:
   id: 10
   provider: "meetup"
   uid: 12345
-  mu_id: 21
   mu_name: "Joe User"
   mu_link: "http://www.meetup.com/members/21"
   authentication_token: "qwerty123"
@@ -18,7 +17,6 @@ jane:
   id: 20
   provider: "meetup"
   uid: 22345
-  mu_id: 221
   mu_name: "Jane User"
   mu_link: "http://www.meetup.com/members/221"
   authentication_token: "qwerty123"

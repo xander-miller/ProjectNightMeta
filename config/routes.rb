@@ -10,16 +10,20 @@ ProjectNightMeta::Application.routes.draw do
 
   get '/about'    => 'home#about'
   get '/login'    => 'sessions#index'
-  get '/signout'  => 'sessions#signout'
+  get '/user/logout'   => 'sessions#signout'
   get '/auth/:provider/callback' => 'sessions#create'
-
-  get  '/account'                 => 'accounts#index'
-  post '/account/update/profile'  => 'accounts#update_profile'
-  post '/account/sync/groups'     => 'accounts#sync_groups'
-  post '/account/sync/projects'   => 'accounts#sync_projects'
 
   get  '/groups'        => 'groups#index'
   get  '/groups/:id'    => 'groups#show'
+
+  get  '/user/account'                 => 'accounts#index'
+  post '/user/account/update/profile'  => 'accounts#update_profile'
+  post '/user/account/sync/groups'     => 'accounts#sync_groups'
+  post '/user/account/sync/projects'   => 'accounts#sync_projects'
+
+  get  '/user/groups'      => 'user_groups#index'
+
+  get  '/user/projects'    => 'user_projects#index'
 
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase

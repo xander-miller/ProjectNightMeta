@@ -7,16 +7,29 @@ class SessionsController < ApplicationController
 
   # GET /auth/:provider/callback
   def create
-    hash = omniauth_hash
-    user = User.find_or_create_from_auth_hash(hash)
-    session[:mu_id] = user.mu_id
-    session[:mu_name] = user.mu_name
+    new_path = "/"
 
-    if user.should_sync
-      redirect_to "/account"
+    if 'meetup' == params[:provider]
+      user = create_meetup
+      if user.should_sync
+        new_path = "/user/groups"
+      end
+    elsif 'github' == params[:provider]
+      create_github
+      new_path = "/user/projects"
     else
-      redirect_to "/"
+      flash[:alert] = "Cannot accept authorization from #{params[:provider]}"
+      redirect_to "/login"
+      return
     end
+
+    redirect_to new_path
+
+    rescue Exception => e
+      flash[:alert] = e.message
+      logger.info e.message
+      logger.info e.backtrace.join("\n")
+      redirect_to "/login"
   end
 
   # GET /signout
@@ -30,4 +43,17 @@ class SessionsController < ApplicationController
     def omniauth_hash
       request.env['omniauth.auth']
     end
+
+    def create_meetup
+      user = User.find_or_create_from_meetup(omniauth_hash)
+      session[:mu_uid] = user.uid
+      session[:mu_name] = user.mu_name
+      session[:provider] = user.provider
+      user
+    end
+
+    def create_github
+      Access.find_or_create_from_auth_hash(current_user, omniauth_hash)
+    end
+
 end

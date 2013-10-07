@@ -2,11 +2,11 @@
 
 joe_rug:
   id: 1
-  user_mu_id: 21
+  user_mu_id: 12345
   group_mu_id: 421325
 
 joe_foojs:
   id: 2
-  user_mu_id: 21
+  user_mu_id: 12345
   group_mu_id: 521325
 
