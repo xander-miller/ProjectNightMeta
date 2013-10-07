@@ -21,6 +21,8 @@ ProjectNightMeta::Application.routes.draw do
   get  '/groups'        => 'groups#index'
   get  '/groups/:id'    => 'groups#show'
 
+  get  '/user/groups'    => 'user_groups#index'
+
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
 

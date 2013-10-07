@@ -26,27 +26,6 @@ notifications and announcements about our services.
   </div>
 </div>
 
-<div id="groups">
-  <h2>Meetup Groups</h2>
-  <div class="group-sync">
-  <%= form_tag "/account/sync/groups", {id: "sync_group_form"} do %>
-  <input id="sync_group_btn" type="submit" value="Sync now"/>
-  <% end %>
-  </div>
-
-  <div class="groups">
-  <ul>
-  <% @user.groups.each do | group | %>
-  <li>
-    <div class="group-img">
-      <a href="/groups/<%= group.urlname %>"><img src="<%= group.mu_thumb_link %>"/> <%= group.mu_name %></a>
-    </div>
-  </li>
-  <% end %>
-  </ul>
-  </div>
-</div>
-
 <div id="projects">
   <h2>GitHub Projects</h2>
   <div class="project-sync">

@@ -31,7 +31,7 @@ class AccountsController < ApplicationController
       end
     end
 
-    redirect_to "/account"
+    redirect_to "/user/groups"
 
     rescue Exception => e
       if e.message.index('401')
@@ -43,7 +43,7 @@ class AccountsController < ApplicationController
       flash[:alert] = e.message
       logger.info e.message
       logger.info e.backtrace.join("\n")
-      redirect_to "/account"
+      redirect_to "/user/groups"
   end
 
   # POST /accounts/sync/projects
