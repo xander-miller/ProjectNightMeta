@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+jane_github:
+  id: 35
+  user_id: 20
+  provider: "github"
+  uid: 49043
+  raw_name: "Jane User"
+  raw_link: "http://www.meetup.com/members/221"
+  raw_photo_link: "http://photos3.meetupstatic.com/photos/member_pic_221.jpeg"
+  token: "qwerty123"
+  expires: false
+

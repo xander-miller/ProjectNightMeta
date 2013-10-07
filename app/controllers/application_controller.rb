@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
 
     # before_filter for accessing user pages
     def check_authorized
-      if session[:mu_id]
+      if session[:mu_uid]
         current_user
         return true
       end
@@ -18,14 +18,18 @@ class ApplicationController < ActionController::Base
     end
 
     def current_user
-      @user = User.find_by_mu_id(session[:mu_id]) unless @user
+      unless @user
+        conditions = {provider: session[:provider], uid: session[:mu_uid]}
+        @user = User.find_by(conditions)
+      end
       @user
     end
 
     def clear_session
       # instead of reset_session
-      session[:mu_id] = nil
+      session[:mu_uid] = nil
       session[:mu_name] = nil
+      session[:provider] = nil
     end
 
 end

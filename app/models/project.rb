@@ -48,10 +48,18 @@ class Project < ActiveRecord::Base
     user
   end
 
+  def remove(user)
+    assoc = UserProject.entry(user, self)
+    if assoc
+      assoc.destroy
+    end
+  end
+
   def refresh_with(github_repo_hash)
     h = github_repo_hash
 
     self.github_id = h["id"]
+    self.owner_id = h["owner"]["id"]
     self.private = h["private"]
     self.fork = h["fork"]
     self.name = h["name"]
@@ -66,6 +74,10 @@ class Project < ActiveRecord::Base
   def maintainers
     a = project_users.select { | each | each.is_maintainer }  
     a.collect { | each | each.user }
+  end
+
+  def is_github
+    !github_id.blank?
   end
 
 end

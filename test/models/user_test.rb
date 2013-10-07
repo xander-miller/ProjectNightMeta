@@ -5,53 +5,53 @@ class UserTest < ActiveSupport::TestCase
 
   test "a register new user" do
     h = new_user_hash
+    h["uid"] = 999999
 
     user = User.register_with(h)
 
-    assert_equal h["provider"], user.provider, "Unexpected provider"
-    assert_equal h["uid"], user.uid, "Unexpected uid"
+    assert_equal h["provider"], user.provider, "provider should match"
+    assert_equal h["uid"], user.uid, "uid should match"
 
     raw_info = h["extra"]["raw_info"]
-    assert_equal raw_info["id"], user.mu_id, "Unexpected mu_id"
-    assert_equal raw_info["name"], user.mu_name, "Unexpected mu_name"
-    assert_equal raw_info["link"], user.mu_link, "Unexpected mu_link"
-    assert_equal raw_info["city"], user.city, "Unexpected city"
-    assert_equal raw_info["country"], user.country, "Unexpected country"
+    assert_equal raw_info["name"], user.mu_name, "mu_name should match"
+    assert_equal raw_info["link"], user.mu_link, "mu_link should match"
+    assert_equal raw_info["city"], user.city, "city should match"
+    assert_equal raw_info["country"], user.country, "country should match"
 
     photo = raw_info["photo"]
-    assert_equal photo["photo_link"], user.mu_photo_link, "Unexpected mu_photo_link"
-    assert_equal photo["highres_link"], user.mu_highres_link, "Unexpected mu_highres_link"
-    assert_equal photo["thumb_link"], user.mu_thumb_link, "Unexpected mu_thumb_link"
-    assert_equal photo["photo_id"], user.mu_photo_id, "Unexpected mu_photo_id"
+    assert_equal photo["photo_link"], user.mu_photo_link, "mu_photo_link should match"
+    assert_equal photo["highres_link"], user.mu_highres_link, "mu_highres_link should match"
+    assert_equal photo["thumb_link"], user.mu_thumb_link, "mu_thumb_link should match"
+    assert_equal photo["photo_id"], user.mu_photo_id, "mu_photo_id should match"
 
     creds = h["credentials"]
-    assert_equal creds["token"], user.authentication_token, "Unexpected authentication_token"
-    assert_equal creds["refresh_token"], user.mu_refresh_token, "Unexpected mu_refresh_token"
-    assert_equal creds["expires_at"], user.mu_expires_at, "Unexpected mu_expires_at"
-    assert_equal creds["expires"], user.mu_expires, "Unexpected mu_expires"
-
+    assert_equal creds["token"], user.authentication_token, "authentication_token should match"
+    assert_equal creds["refresh_token"], user.mu_refresh_token, "mu_refresh_token should match"
+    assert_equal creds["expires_at"], user.mu_expires_at, "mu_expires_at should match"
+    assert_equal creds["expires"], user.mu_expires, "mu_expires should match"
   end
 
   test "save a registered user" do
     h = new_user_hash
+    h["uid"] = 999999
     user = User.register_with(h)
     assert user.save!, "Should saved"
-    users = User.where(["mu_id=?", user.mu_id])
+    users = User.where(["uid=?", user.uid])
     assert_equal 1, users.length, "Should be one row"
   end
 
   test "save duplicate user" do
     h = new_user_hash
+    h["uid"] = 999999
     user = User.register_with(h)
     assert user.save!, "Should saved"
-    users = User.where(["mu_id=?", user.mu_id])
+    users = User.where(["uid=?", user.uid])
     assert_equal 1, users.length, "Should be one row"
 
-    user = User.register_with(h)
-    exception = assert_raise(ActiveRecord::RecordInvalid) {user.save!}
-    assert_equal "Validation failed: Mu has already been taken", exception.message
+    exception = assert_raise(ActiveRecord::RecordInvalid) {User.register_with(h)}
+    assert_equal "Validation failed: Uid has already been taken", exception.message
 
-    users = User.where(["mu_id=?", user.mu_id])
+    users = User.where(["uid=?", user.uid])
     assert_equal 1, users.length, "Should be one row"
   end
 
@@ -69,17 +69,9 @@ class UserTest < ActiveSupport::TestCase
     assert exception.message.index("Uid can't be blank")
   end
 
-  test "validate presence of mu_id" do
-    user = User.new
-    user.uid = 94022
-    exception = assert_raise(ActiveRecord::RecordInvalid) {user.save!}
-    assert exception.message.index("Mu can't be blank")
-  end
-
   test "validate presence of mu_name" do
     user = User.new
     user.uid = 94022
-    user.mu_id = 4902
     exception = assert_raise(ActiveRecord::RecordInvalid) {user.save!}
     assert exception.message.index("Mu name can't be blank")
   end
@@ -87,7 +79,6 @@ class UserTest < ActiveSupport::TestCase
   test "validate presence of mu_link" do
     user = User.new
     user.uid = 94022
-    user.mu_id = 4902
     user.mu_name = "Jane"
     exception = assert_raise(ActiveRecord::RecordInvalid) {user.save!}
     assert exception.message.index("Mu link can't be blank")
@@ -96,7 +87,6 @@ class UserTest < ActiveSupport::TestCase
   test "validate presence of provider" do
     user = User.new
     user.uid = 94022
-    user.mu_id = 4902
     user.mu_name = "Jane"
     user.provider = nil
     exception = assert_raise(ActiveRecord::RecordInvalid) {user.save!}
@@ -114,9 +104,12 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 2, grps.length, "There should be 2 meetup groups in import payload"
 
     imported = []
-    User.transaction do
-      imported = user.import_meetup_groups(grps)
-    end
+    grps.each { | hash |
+      MeetupGroup.transaction do
+        grp = user.import_meetup_group(hash)
+        imported << grp if grp
+      end
+    }
     assert_equal grps.length, imported.length, "Number imported should equal number in payload"
 
     user.reload
@@ -135,13 +128,23 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 2, root_array.length, "Should be 2 projects in import payload"
 
     imported = []
-    User.transaction do
-      imported = user.import_github_projects(root_array)
-    end
+    root_array.each { | hash |
+      Project.transaction do
+        prj = user.import_github_project(hash)
+        imported << prj if prj
+      end
+    }
     assert_equal root_array.length, imported.length, "Number imported should equal number in payload"
 
     user.reload
     assert_equal 2, user.projects.length, "Should have 2 new Project associations"
+  end
+
+  test "has many accesses" do
+    user = users(:jane)
+    accesses = user.accesses
+    assert_equal 1, accesses.length, "user has many accesses"
+    assert_equal "github", accesses.first.provider, "first access provider is github"
   end
 
 end

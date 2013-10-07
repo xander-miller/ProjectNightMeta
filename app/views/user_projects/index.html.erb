@@ -1,0 +1,33 @@
+<h1><%= @title %></h1>
+
+<div id="projects_intro">
+  <% if @user.should_sync_github %>
+<p>User has not sync GitHub projects - provide instruction to sync</p>
+  <% end %>
+</div>
+
+<div id="projects">
+  <div class="project-sync">
+  <%= form_tag "/user/account/sync/projects", {id: "sync_project_form"} do %>
+  <input id="sync_project_btn" type="submit" value="Sync GitHub projects now"/>
+  <% end %>
+  </div>
+
+  <div class="projects">
+  <ul>
+  <% @user.projects.each do | project | %>
+  <li>
+    <div class="project-entry">
+      <ul>
+      <li><a href="/projects/<%= project.id %>"><%= project.full_name %></a></li>
+      <li><%= project.description %></li>
+      <% if project.is_github %>
+      <li>forked: <%= project.fork %> &nbsp; <%= project.language %> &nbsp; <a href="<%= project.html_url %>">GitHub</a></li>
+      <% end %>
+    </div>
+  </li>
+  <% end %>
+  </ul>
+  </div>
+</div>
+
