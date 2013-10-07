@@ -48,6 +48,13 @@ class Project < ActiveRecord::Base
     user
   end
 
+  def remove(user)
+    assoc = UserProject.entry(user, self)
+    if assoc
+      assoc.destroy
+    end
+  end
+
   def refresh_with(github_repo_hash)
     h = github_repo_hash
 

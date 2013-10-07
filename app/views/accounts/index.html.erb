@@ -48,11 +48,22 @@ notifications and announcements about our services.
 </div>
 
 <div id="projects">
-  <h2>GitHub Projects - TODO</h2>
+  <h2>GitHub Projects</h2>
   <div class="project-sync">
   <%= form_tag "/account/sync/projects", {id: "sync_project_form"} do %>
   <input id="sync_project_btn" type="submit" value="Sync now"/>
   <% end %>
   </div>
 
+  <div class="projects">
+  <ul>
+  <% @user.projects.each do | project | %>
+  <li>
+    <div class="project-entry">
+      <a href="/project/<%= project.id %>"><%= project.full_name %></a>
+    </div>
+  </li>
+  <% end %>
+  </ul>
+  </div>
 </div>

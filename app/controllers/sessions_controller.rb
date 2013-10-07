@@ -15,7 +15,8 @@ class SessionsController < ApplicationController
         new_path = "/account"
       end
     elsif 'github' == params[:provider]
-      user = create_github
+      create_github
+      new_path = "/account"
     else
       flash[:alert] = "Cannot accept authorization from #{params[:provider]}"
       redirect_to "/login"
@@ -52,8 +53,7 @@ class SessionsController < ApplicationController
     end
 
     def create_github
-      puts omniauth_hash
-      current_user
+      Access.find_or_create_from_auth_hash(current_user, omniauth_hash)
     end
 
 end

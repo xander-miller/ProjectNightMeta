@@ -104,9 +104,12 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 2, grps.length, "There should be 2 meetup groups in import payload"
 
     imported = []
-    User.transaction do
-      imported = user.import_meetup_groups(grps)
-    end
+    grps.each { | hash |
+      MeetupGroup.transaction do
+        grp = user.import_meetup_group(hash)
+        imported << grp if grp
+      end
+    }
     assert_equal grps.length, imported.length, "Number imported should equal number in payload"
 
     user.reload
@@ -125,9 +128,12 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 2, root_array.length, "Should be 2 projects in import payload"
 
     imported = []
-    User.transaction do
-      imported = user.import_github_projects(root_array)
-    end
+    root_array.each { | hash |
+      Project.transaction do
+        prj = user.import_github_project(hash)
+        imported << prj if prj
+      end
+    }
     assert_equal root_array.length, imported.length, "Number imported should equal number in payload"
 
     user.reload

@@ -26,7 +26,7 @@ class AccountsController < ApplicationController
       MeetupGroup.transaction do
         group_mu_ids.each do | mu_id |
           group = MeetupGroup.find_by_mu_id(mu_id)
-          group.remove(current_user)
+          group.remove(current_user) if group
         end
       end
     end
@@ -48,8 +48,40 @@ class AccountsController < ApplicationController
 
   # POST /accounts/sync/projects
   def sync_projects
+    access = current_user.github_access
+    unless access
+      redirect_to "/auth/github"
+      return
+    end
+
+    client = Octokit::Client.new :access_token => access.token
+    repos = client.user.rels[:repos].get.data
+
+    project_ids = current_user.projects.collect { | ea | ea.github_id }
+    project_ids.compact!
+    import_projects(repos, project_ids)
+
+    # user may remove/make private these projects - remove UserProject association
+    unless project_ids.blank?
+      Project.transaction do
+        project_ids.each do | gid |
+          project = Project.find_by_github_id(gid)
+          project.remove(current_user) if project
+        end
+      end
+    end
 
     redirect_to "/account"
+
+    rescue Exception => e
+      if e.message.index('401')
+        redirect_to "/auth/github"
+        return
+      end
+      flash[:alert] = e.message
+      logger.info e.message
+      logger.info e.backtrace.join("\n")
+      redirect_to "/account"
   end
 
 
@@ -68,9 +100,11 @@ class AccountsController < ApplicationController
       groups_a.each do | hash |
         begin
           MeetupGroup.transaction do
-            sync_a = current_user.import_meetup_groups([hash])
-            count += 1
-            group_mu_ids.delete(sync_a.first.mu_id)
+            group = current_user.import_meetup_group(hash)
+            unless group.blank?
+              count += 1
+              group_mu_ids.delete(group.mu_id)
+            end
           end
         rescue Exception => e
           fail_count += 1
@@ -85,6 +119,34 @@ class AccountsController < ApplicationController
       end
       if fail_count > 0
         flash[:alert] = "Failed to sync #{fail_count} group(s)."
+      end
+    end
+
+    def import_projects(project_a, project_ids)
+      count = 0
+      fail_count = 0
+      project_a.each do | repo |
+        begin
+          Project.transaction do
+            project = current_user.import_github_project(repo)
+            unless project.blank?
+              count += 1
+              project_ids.delete(project.github_id)
+            end
+          end
+        rescue Exception => e
+          fail_count += 1
+          logger.info "import_projects fail count: #{fail_count}"
+          logger.info e.message
+          logger.info e.backtrace.join("\n")
+        end
+      end
+
+      if count > 0
+        flash[:notice] = "Synced #{count} project(s)."
+      end
+      if fail_count > 0
+        flash[:alert] = "Failed to sync #{fail_count} project(s)."
       end
     end
 

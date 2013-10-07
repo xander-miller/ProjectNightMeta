@@ -49,34 +49,40 @@ class User < ActiveRecord::Base
     UserGroup.has_entry?(self, group)
   end
 
-  def import_meetup_groups(array)
-    imported = []
-    array.each { | hash |
-      if hash["visibility"].downcase == "public"
-        group = MeetupGroup.import_with(hash)
-        group.add(self)
-        imported.push(group)
-      end
-    }
-    imported
+  def import_meetup_group(hash)
+    return nil unless hash["visibility"].downcase.index("public")
+    group = MeetupGroup.import_with(hash)
+    group.add(self)
+    group
   end
 
   def contributor_of?(project)
     UserProject.has_entry?(self, project)
   end
 
-  def import_github_projects(array)
-    imported = []
-    array.each { | hash |
-      project = Project.import_with(hash)
-      project.add_maintainer(self)
-      imported.push(project)
-    }
-    imported
+  def import_github_project(hash)
+    return nil if hash["private"]
+    project = Project.import_with(hash)
+    project.add_maintainer(self)
+    project
   end
 
   def should_sync
     user_groups.blank?
   end
+
+  def github_access
+    access_by("github")
+  end
+
+  def meetup_access
+    access_by("meetup")
+  end
+
+
+  protected
+    def access_by(provider="meetup")
+      accesses.find { | ea | ea.provider == provider }
+    end
 
 end
