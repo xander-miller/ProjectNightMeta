@@ -1,20 +1,20 @@
 class AccountsController < ApplicationController
   before_filter :check_authorized
 
-  # GET /user/accounts
+  # GET /user/account
   def index
     @title = "Account Settings"
   end
 
-  # POST /user/accounts/update/profile
+  # POST /user/account/update/profile
   def update_profile
     current_user.email = params[:email]
     current_user.save!
     flash[:notice] = "Email updated"
-    redirect_to "/account"
+    redirect_to "/user/account"
   end
 
-  # POST /user/accounts/sync/groups
+  # POST /user/account/sync/groups
   def sync_groups
     hash = get_user_meetup_groups
 
@@ -46,7 +46,7 @@ class AccountsController < ApplicationController
       redirect_to "/user/groups"
   end
 
-  # POST /user/accounts/sync/projects
+  # POST /user/account/sync/projects
   def sync_projects
     access = current_user.github_access
     unless access
