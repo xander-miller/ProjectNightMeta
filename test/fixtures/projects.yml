@@ -10,3 +10,4 @@ jane_blog:
   description: "Jane's World"
   language: "Ruby, JavaScript"
   user_id: 20
+  visible: false

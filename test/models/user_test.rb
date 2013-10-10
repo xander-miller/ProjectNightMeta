@@ -152,4 +152,16 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 1, user.collaborations.length, "Should have 1 Project collaborations"
   end
 
+  test "has many visbible projects" do
+    user = users(:jane)
+    assert_equal 0, user.visible_projects.length, "Should have 0 projects"
+    projects = user.projects
+    projects.each do | project |
+      project.visible = true
+      project.save
+    end
+    user.reload
+    assert_equal projects.length, user.visible_projects.length, "Should match visible projects"
+  end
+
 end

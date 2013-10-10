@@ -15,10 +15,8 @@ class User < ActiveRecord::Base
 
   # projects I own
   has_many :projects, class_name: 'Project', foreign_key: :user_id, primary_key: :id
-
-  has_many :visible_user_projects, -> { where('visible = true') },
-    class_name: 'UserProject', foreign_key: :user_id, primary_key: :id
-  has_many :visible_projects, through: :visible_user_projects, source: :project
+  has_many :visible_projects, -> { where('visible = true') },
+    class_name: 'Project', foreign_key: :user_id, primary_key: :id
 
 
   # class methods

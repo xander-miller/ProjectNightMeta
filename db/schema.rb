@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131010022458) do
+ActiveRecord::Schema.define(version: 20131010032838) do
 
   create_table "accesses", force: true do |t|
     t.integer  "user_id",                           null: false
@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(version: 20131010022458) do
     t.datetime "updated_at"
     t.integer  "owner_id"
     t.integer  "user_id",     default: 0,     null: false
+    t.boolean  "visible",     default: false
   end
 
   add_index "projects", ["full_name"], name: "index_projects_on_full_name", using: :btree

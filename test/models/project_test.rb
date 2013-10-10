@@ -20,6 +20,8 @@ class ProjectTest < ActiveSupport::TestCase
     assert_equal h["html_url"], project.html_url, "html_url should match"
     created_at = Time.zone.parse(h["created_at"])
     assert_equal created_at, project.created_at, "created_at should match"
+
+    assert_equal false, project.visible, "not visible by default"
   end
 
   test "validate presence of full_name" do
