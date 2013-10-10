@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131007030351) do
+ActiveRecord::Schema.define(version: 20131010043822) do
 
   create_table "accesses", force: true do |t|
     t.integer  "user_id",                           null: false
@@ -70,10 +70,16 @@ ActiveRecord::Schema.define(version: 20131007030351) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "owner_id"
+    t.integer  "user_id",     default: 0,     null: false
+    t.boolean  "visible",     default: false
+    t.string   "city"
+    t.string   "country"
   end
 
+  add_index "projects", ["city"], name: "index_projects_on_city", using: :btree
   add_index "projects", ["full_name"], name: "index_projects_on_full_name", using: :btree
   add_index "projects", ["owner_id"], name: "index_projects_on_owner_id", using: :btree
+  add_index "projects", ["user_id"], name: "index_projects_on_user_id", using: :btree
 
   create_table "user_groups", force: true do |t|
     t.integer  "user_mu_id",                 null: false
@@ -92,7 +98,6 @@ ActiveRecord::Schema.define(version: 20131007030351) do
     t.boolean  "is_maintainer", default: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "visible",       default: false
   end
 
   add_index "user_projects", ["project_id"], name: "index_user_projects_on_project_id", using: :btree

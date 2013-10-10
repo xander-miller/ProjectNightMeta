@@ -24,6 +24,9 @@
       <% if project.is_github %>
       <li>forked: <%= project.fork %> &nbsp; <%= project.language %> &nbsp; <a href="<%= project.html_url %>">GitHub</a></li>
       <% end %>
+      <%= form_tag( "/user/projects/#{project.id}/toggle", method: :put ) do %>
+        <%= submit_tag (project.visible ? 'Hide' : 'Show') %>
+      <% end %>
     </div>
   </li>
   <% end %>

@@ -118,7 +118,7 @@ class UserTest < ActiveSupport::TestCase
 
   test "has many projects" do
     user = users(:jane)
-    assert_equal 1, user.projects.length, "Should have 1 Project associations"
+    assert_equal 1, user.projects.length, "Should own 1 Project"
   end
 
   test "import user Github projects" do
@@ -131,7 +131,11 @@ class UserTest < ActiveSupport::TestCase
     root_array.each { | hash |
       Project.transaction do
         prj = user.import_github_project(hash)
-        imported << prj if prj
+        if prj
+          imported << prj
+          assert_equal user.city, prj.city, "Should match city"
+          assert_equal user.country, prj.country, "Should match country"
+        end
       end
     }
     assert_equal root_array.length, imported.length, "Number imported should equal number in payload"
@@ -145,6 +149,23 @@ class UserTest < ActiveSupport::TestCase
     accesses = user.accesses
     assert_equal 1, accesses.length, "user has many accesses"
     assert_equal "github", accesses.first.provider, "first access provider is github"
+  end
+
+  test "has many collaborations" do
+    user = users(:jane)
+    assert_equal 1, user.collaborations.length, "Should have 1 Project collaborations"
+  end
+
+  test "has many visbible projects" do
+    user = users(:jane)
+    assert_equal 0, user.visible_projects.length, "Should have 0 projects"
+    projects = user.projects
+    projects.each do | project |
+      project.visible = true
+      project.save
+    end
+    user.reload
+    assert_equal projects.length, user.visible_projects.length, "Should match visible projects"
   end
 
 end
