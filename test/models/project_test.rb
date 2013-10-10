@@ -70,6 +70,8 @@ class ProjectTest < ActiveSupport::TestCase
     assert_equal 1, maintainers.length, "Should have 1 maintainer"
     user = users(:jane)
     assert_equal user, maintainers.first, "Maintainer is Jane"
+    assert_equal user.city, project.city, "Should match city"
+    assert_equal user.country, project.country, "Should match country"
   end
 
 end

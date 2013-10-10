@@ -131,7 +131,11 @@ class UserTest < ActiveSupport::TestCase
     root_array.each { | hash |
       Project.transaction do
         prj = user.import_github_project(hash)
-        imported << prj if prj
+        if prj
+          imported << prj
+          assert_equal user.city, prj.city, "Should match city"
+          assert_equal user.country, prj.country, "Should match country"
+        end
       end
     }
     assert_equal root_array.length, imported.length, "Number imported should equal number in payload"

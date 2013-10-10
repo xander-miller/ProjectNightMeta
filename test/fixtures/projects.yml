@@ -11,3 +11,5 @@ jane_blog:
   language: "Ruby, JavaScript"
   user_id: 20
   visible: false
+  city: "Ottawa"
+  country: "CA"

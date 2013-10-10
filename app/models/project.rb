@@ -35,6 +35,8 @@ class Project < ActiveRecord::Base
     if user_id.blank? || user_id == 0
       # no owner, set the project owner now
       self.user = user
+      self.city = user.city
+      self.country = user.country
       save!
     end
 
