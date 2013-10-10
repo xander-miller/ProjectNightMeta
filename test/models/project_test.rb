@@ -20,6 +20,8 @@ class ProjectTest < ActiveSupport::TestCase
     assert_equal h["html_url"], project.html_url, "html_url should match"
     created_at = Time.zone.parse(h["created_at"])
     assert_equal created_at, project.created_at, "created_at should match"
+
+    assert_equal false, project.visible, "not visible by default"
   end
 
   test "validate presence of full_name" do
@@ -48,11 +50,10 @@ class ProjectTest < ActiveSupport::TestCase
     assert_equal 1, projects.length, "Should be one row"
 
     project = Project.build_with(h)
-    exception = assert_raise(ActiveRecord::RecordInvalid) {project.save!}
-    assert_equal "Validation failed: Full name has already been taken", exception.message
+    assert project.save!, "Should saved - duplicate is allowed"
 
     projects = Project.where(["github_id=?", project.github_id])
-    assert_equal 1, projects.length, "Should be one row"
+    assert_equal 2, projects.length, "Should be two rows"
   end
 
   test "has contributors" do
@@ -69,6 +70,8 @@ class ProjectTest < ActiveSupport::TestCase
     assert_equal 1, maintainers.length, "Should have 1 maintainer"
     user = users(:jane)
     assert_equal user, maintainers.first, "Maintainer is Jane"
+    assert_equal user.city, project.city, "Should match city"
+    assert_equal user.country, project.country, "Should match country"
   end
 
 end

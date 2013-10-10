@@ -9,4 +9,7 @@ jane_blog:
   full_name: "jane/blog-weekly"
   description: "Jane's World"
   language: "Ruby, JavaScript"
-
+  user_id: 20
+  visible: false
+  city: "Ottawa"
+  country: "CA"
