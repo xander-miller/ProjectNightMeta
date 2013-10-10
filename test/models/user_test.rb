@@ -118,7 +118,7 @@ class UserTest < ActiveSupport::TestCase
 
   test "has many projects" do
     user = users(:jane)
-    assert_equal 1, user.projects.length, "Should have 1 Project associations"
+    assert_equal 1, user.projects.length, "Should own 1 Project"
   end
 
   test "import user Github projects" do
@@ -145,6 +145,11 @@ class UserTest < ActiveSupport::TestCase
     accesses = user.accesses
     assert_equal 1, accesses.length, "user has many accesses"
     assert_equal "github", accesses.first.provider, "first access provider is github"
+  end
+
+  test "has many collaborations" do
+    user = users(:jane)
+    assert_equal 1, user.collaborations.length, "Should have 1 Project collaborations"
   end
 
 end

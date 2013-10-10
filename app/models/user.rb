@@ -8,8 +8,13 @@ class User < ActiveRecord::Base
   has_many :user_groups, class_name: 'UserGroup', foreign_key: :user_mu_id, primary_key: :uid
   has_many :groups, through: :user_groups, source: :group
 
+  # association of projects I contribute to, including owned
   has_many :user_projects, class_name: 'UserProject', foreign_key: :user_id, primary_key: :id
-  has_many :projects, through: :user_projects, source: :project
+  # projects I contribute to, including owned
+  has_many :collaborations, through: :user_projects, source: :project
+
+  # projects I own
+  has_many :projects, class_name: 'Project', foreign_key: :user_id, primary_key: :id
 
   has_many :visible_user_projects, -> { where('visible = true') },
     class_name: 'UserProject', foreign_key: :user_id, primary_key: :id

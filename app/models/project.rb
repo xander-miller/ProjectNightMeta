@@ -5,6 +5,8 @@ class Project < ActiveRecord::Base
 
   has_many :project_users, class_name: 'UserProject', foreign_key: :project_id, primary_key: :id
   has_many :contributors, through: :project_users, source: :user
+  belongs_to :user, class_name: 'User', foreign_key: :user_id, primary_key: :id
+
 
   # class methods
 
@@ -31,14 +33,24 @@ class Project < ActiveRecord::Base
   # instance methods
 
   def add_maintainer(user)
+    if user_id.blank? || user_id == 0
+      # no owner, set the project owner now
+      self.user = user
+      save!
+    end
+
     assoc = UserProject.entry(user, self)
+    # found existing entry
     if assoc
       if !assoc.is_maintainer
-        # TODO - make user maintainer of project? User should already is!
+        # make user a project maintainer - transfer of maintainership?
+        assoc.is_maintainer = true
+        assoc.save!
       end
       return user
     end
 
+    # create new entry
     assoc = UserProject.new
     assoc.user = user
     assoc.project = self
