@@ -50,11 +50,10 @@ class ProjectTest < ActiveSupport::TestCase
     assert_equal 1, projects.length, "Should be one row"
 
     project = Project.build_with(h)
-    exception = assert_raise(ActiveRecord::RecordInvalid) {project.save!}
-    assert_equal "Validation failed: Full name has already been taken", exception.message
+    assert project.save!, "Should saved - duplicate is allowed"
 
     projects = Project.where(["github_id=?", project.github_id])
-    assert_equal 1, projects.length, "Should be one row"
+    assert_equal 2, projects.length, "Should be two rows"
   end
 
   test "has contributors" do

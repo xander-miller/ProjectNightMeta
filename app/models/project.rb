@@ -1,7 +1,6 @@
 class Project < ActiveRecord::Base
 
   validates_presence_of   :full_name
-  validates_uniqueness_of :full_name
 
   has_many :project_users, class_name: 'UserProject', foreign_key: :project_id, primary_key: :id
   has_many :contributors, through: :project_users, source: :user
