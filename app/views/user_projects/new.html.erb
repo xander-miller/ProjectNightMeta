@@ -1,0 +1,14 @@
+<h1><%= @title %></h1>
+
+<%= form_for :project, {url: "/user/projects"} do |f| %>
+  <p>Name<br />
+  <%= f.text_field :full_name, {size:30, maxlength:255,  placeholder: "project name"} %>
+  </p>
+  <p>Description<br />
+  <%= f.text_field :description, {size:50, maxlength: 255,  placeholder: "short summary"} %>
+  </p>
+  <p>Language<br />
+  <%= f.text_field :language, {size:25, maxlength: 255, placeholder: "primary language"} %>
+  </p>
+  <%= f.submit %>
+<% end %>

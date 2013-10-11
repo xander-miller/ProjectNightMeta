@@ -14,8 +14,8 @@ class User < ActiveRecord::Base
   has_many :collaborations, through: :user_projects, source: :project
 
   # projects I own
-  has_many :projects, class_name: 'Project', foreign_key: :user_id, primary_key: :id
-  has_many :visible_projects, -> { where('visible = true') },
+  has_many :projects, -> { order("updated_at desc") }, class_name: 'Project', foreign_key: :user_id, primary_key: :id
+  has_many :visible_projects, -> { where(visible: true) },
     class_name: 'Project', foreign_key: :user_id, primary_key: :id
 
 

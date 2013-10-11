@@ -66,10 +66,7 @@ class AccountsController < ApplicationController
       Project.transaction do
         project_ids.each do | gid |
           project = Project.find_by_github_id(gid)
-          if project
-            project.remove(current_user)
-            project.destroy
-          end
+          project.destroy if project
         end
       end
     end
