@@ -15,32 +15,7 @@
     <%= csrf_meta_tags %>
   </head>
   <body>
-  <div class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="/">Project Night Meta</a>
-      </div>
-      <div class="collapse navbar-collapse">
-        <ul class="nav navbar-nav">
-          <li><a href="/about">About</a></li>
-          <li class="signin-nav-gap"> &nbsp; </li>
-          <%- if session[:mu_uid] -%>
-          <li><%= link_to 'My Groups', '/user/groups', {title: 'My Meetup groups'} -%></li>
-          <li><%= link_to 'My Projects', '/user/projects', {title: 'My projects'} -%></li>
-          <li><%= link_to 'Settings', '/user/account', {title: 'My account settings'} -%></li>
-          <li><%= link_to "#{session[:mu_name]} (Sign out)", '/user/signout' -%></li>
-          <%- else -%>
-          <li><%= link_to 'Sign in', '/signin' %></li>
-          <%- end -%>
-        </ul>
-      </div><!--/.nav-collapse -->
-    </div>
-  </div>
+  <%= render 'layouts/navbar' %>
   <div class="container">
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
