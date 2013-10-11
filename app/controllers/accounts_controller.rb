@@ -36,8 +36,8 @@ class AccountsController < ApplicationController
     rescue Exception => e
       if e.message.index('401')
         clear_session
-        flash[:notice] = "Your session may have expired. Please login to resume access."
-        redirect_to "/login"
+        flash[:notice] = "Your session may have expired. Please Sign in to resume access."
+        redirect_to "/signin"
         return
       end
       flash[:alert] = e.message
@@ -66,7 +66,10 @@ class AccountsController < ApplicationController
       Project.transaction do
         project_ids.each do | gid |
           project = Project.find_by_github_id(gid)
-          project.remove(current_user) if project
+          if project
+            project.remove(current_user)
+            project.destroy
+          end
         end
       end
     end

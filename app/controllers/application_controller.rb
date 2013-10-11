@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
         current_user
         return true
       end
-      redirect_to "/login"
+      redirect_to "/signin"
     end
 
     def current_user
@@ -32,4 +32,15 @@ class ApplicationController < ActionController::Base
       session[:provider] = nil
     end
 
+    def log_error_and_redirect_to(error, url_path)
+      logger.info error.message
+      logger.info error.backtrace.join("\n")
+      respond_to do | format |
+        format.html {
+          flash[:alert] = error.message
+          redirect_to url_path
+        }
+        format.json {raise error}
+      end
+    end
 end

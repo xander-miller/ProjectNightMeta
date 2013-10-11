@@ -9,8 +9,8 @@ ProjectNightMeta::Application.routes.draw do
   #   get 'products/:id' => 'catalog#view'
 
   get '/about'    => 'home#about'
-  get '/login'    => 'sessions#index'
-  get '/user/logout'   => 'sessions#signout'
+  get '/signin'        => 'sessions#index'
+  get '/user/signout'  => 'sessions#signout'
   get '/auth/:provider/callback' => 'sessions#create'
 
   get  '/groups'        => 'groups#index'
@@ -23,8 +23,13 @@ ProjectNightMeta::Application.routes.draw do
 
   get  '/user/groups'      => 'user_groups#index'
 
-  get  '/user/projects'    => 'user_projects#index'
+  get  '/user/projects'        => 'user_projects#index'
   put  '/user/projects/:id/toggle'  => 'user_projects#toggle_visible'
+  get  '/user/projects/new'    => 'user_projects#new'
+  post '/user/projects'        => 'user_projects#create'
+  get  '/user/projects/:id/edit' => 'user_projects#edit'
+  put  '/user/projects/:id'      => 'user_projects#update'
+  delete '/user/projects/:id'    => 'user_projects#delete'
 
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
