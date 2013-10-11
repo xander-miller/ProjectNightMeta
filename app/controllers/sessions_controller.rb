@@ -1,6 +1,6 @@
 class SessionsController < ApplicationController
 
-  # GET /login
+  # GET /signin
   def index
     @title = "Welcome"
   end
@@ -19,20 +19,17 @@ class SessionsController < ApplicationController
       new_path = "/user/projects"
     else
       flash[:alert] = "Cannot accept authorization from #{params[:provider]}"
-      redirect_to "/login"
+      redirect_to "/signin"
       return
     end
 
     redirect_to new_path
 
     rescue Exception => e
-      flash[:alert] = e.message
-      logger.info e.message
-      logger.info e.backtrace.join("\n")
-      redirect_to "/login"
+      log_error_and_redirect_to(e, '/signin')
   end
 
-  # GET /signout
+  # GET /user/signout
   def signout
     clear_session
     redirect_to "/"
@@ -45,7 +42,10 @@ class SessionsController < ApplicationController
     end
 
     def create_meetup
-      user = User.find_or_create_from_meetup(omniauth_hash)
+      user = nil
+      User.transaction do
+        user = User.find_or_create_from_meetup(omniauth_hash)
+      end
       session[:mu_uid] = user.uid
       session[:mu_name] = user.mu_name
       session[:provider] = user.provider
@@ -53,7 +53,10 @@ class SessionsController < ApplicationController
     end
 
     def create_github
-      Access.find_or_create_from_auth_hash(current_user, omniauth_hash)
+      Access.transaction do
+        Access.find_or_create_from_auth_hash(current_user, omniauth_hash)
+      end
+      current_user
     end
 
 end

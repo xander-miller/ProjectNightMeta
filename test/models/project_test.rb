@@ -74,4 +74,36 @@ class ProjectTest < ActiveSupport::TestCase
     assert_equal user.country, project.country, "Should match country"
   end
 
+  test "add contributor" do
+    project = projects(:jane_blog)
+    user = users(:joe)
+    project.add_contributor(user)
+    assert user.contributor_of?(project), "Joe should be a contributor"
+    contributors = project.contributors
+    assert_equal 2, contributors.length, "Should have 2 contributors"
+  end
+
+  test "remove contributor" do
+    project = projects(:jane_blog)
+    user = users(:joe)
+    project.add_contributor(user)
+    assert user.contributor_of?(project), "Joe should be a contributor"
+    project.remove(user)
+    project.reload
+    assert_equal false, user.contributor_of?(project), "Joe should Not be a contributor"
+    contributors = project.contributors
+    assert_equal 1, contributors.length, "Should have 1 contributor"
+  end
+
+  test "destroy project" do
+    project = projects(:jane_blog)
+    contributors = project.contributors
+    assert_equal 1, contributors.length, "Should have 1 contributor"
+    project_id = project.id
+    assert project.destroy, "Should destroy"
+    project = Project.find_by_id project_id
+    assert_equal nil, project, "Should be nil"
+    assocs = UserProject.where(project_id: project_id)
+    assert_equal 0, assocs.length, "Should be empty results"
+  end
 end

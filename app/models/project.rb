@@ -1,5 +1,5 @@
 class Project < ActiveRecord::Base
-
+  before_destroy :destroy_project_users
   validates_presence_of   :full_name
 
   has_many :project_users, class_name: 'UserProject', foreign_key: :project_id, primary_key: :id
@@ -30,6 +30,12 @@ class Project < ActiveRecord::Base
 
 
   # instance methods
+
+  def add_contributor(user)
+    return user if user.contributor_of?(self)
+    self.contributors << user
+    user
+  end
 
   def add_maintainer(user)
     if user_id.blank? || user_id == 0
@@ -63,9 +69,8 @@ class Project < ActiveRecord::Base
 
   def remove(user)
     assoc = UserProject.entry(user, self)
-    if assoc
-      assoc.destroy
-    end
+    assoc.destroy! if assoc
+    true
   end
 
   def refresh_with(github_repo_hash)
@@ -93,4 +98,10 @@ class Project < ActiveRecord::Base
     !github_id.blank?
   end
 
+  protected
+    def destroy_project_users
+      project_users.each { | assoc |
+        assoc.destroy!
+      }
+    end
 end

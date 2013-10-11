@@ -9,7 +9,7 @@
 <div id="projects">
   <div class="project-sync">
   <%= form_tag "/user/account/sync/projects", {id: "sync_project_form"} do %>
-  <input id="sync_project_btn" type="submit" value="Sync GitHub projects now"/>
+  <input id="sync_project_btn" type="submit" value="Sync GitHub projects now"/> | <%= link_to "New Project", "/user/projects/new" %>
   <% end %>
   </div>
 
@@ -19,13 +19,23 @@
   <li>
     <div class="project-entry">
       <ul>
-      <li><a href="/projects/<%= project.id %>"><%= project.full_name %></a></li>
+      <li><% if project.is_github -%>
+        <%= project.full_name %>
+        <%- else -%>
+        <a href="/user/projects/<%= project.id %>/edit"><%= project.full_name %></a>
+        <%- end -%>
+      </li>
       <li><%= project.description %></li>
       <% if project.is_github %>
-      <li>forked: <%= project.fork %> &nbsp; <%= project.language %> &nbsp; <a href="<%= project.html_url %>">GitHub</a></li>
+      <li>fork: <%= project.fork %> &nbsp; lang: <%= project.language %> &nbsp; <a href="<%= project.html_url %>">GitHub</a></li>
       <% end %>
       <%= form_tag( "/user/projects/#{project.id}/toggle", method: :put ) do %>
         <%= submit_tag (project.visible ? 'Hide' : 'Show') %>
+      <% end %>
+      <% unless project.is_github %>
+      <%= form_tag( "/user/projects/#{project.id}", method: :delete ) do %>
+        <%= submit_tag "delete" %>
+      <% end %>
       <% end %>
     </div>
   </li>
@@ -33,4 +43,3 @@
   </ul>
   </div>
 </div>
-

@@ -33,9 +33,9 @@
           <li><%= link_to 'My Groups', '/user/groups', {title: 'My Meetup groups'} -%></li>
           <li><%= link_to 'My Projects', '/user/projects', {title: 'My projects'} -%></li>
           <li><%= link_to 'Settings', '/user/account', {title: 'My account settings'} -%></li>
-          <li><%= link_to "#{session[:mu_name]} (log out)", '/user/logout' -%></li>
+          <li><%= link_to "#{session[:mu_name]} (Sign out)", '/user/signout' -%></li>
           <%- else -%>
-          <li><%= link_to 'Sign in', '/login' %></li>
+          <li><%= link_to 'Sign in', '/signin' %></li>
           <%- end -%>
         </ul>
       </div><!--/.nav-collapse -->

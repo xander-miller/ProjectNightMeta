@@ -14,6 +14,4 @@ class UserProject < ActiveRecord::Base
   def self.has_entry?(user, project)
     !entry(user, project).nil?
   end
-
-
 end
