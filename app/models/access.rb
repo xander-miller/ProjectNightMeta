@@ -58,20 +58,26 @@ class Access < ActiveRecord::Base
       self.expires = creds["expires"]
       user.mu_expires = expires
 
-      raw_info = h["extra"]["raw_info"]
-      user.mu_name = raw_info["name"]
+      info = h["info"]
+      user.mu_name = info["name"]
       self.raw_name = user.mu_name
-      user.mu_link = raw_info["link"]
-      self.raw_link = user.mu_link
-      user.city = raw_info["city"]
-      user.country = raw_info["country"]
-
-      photo = raw_info["photo"]
-      user.mu_photo_link = photo["photo_link"]
+      user.mu_photo_link = info["photo_url"]
       self.raw_photo_link = user.mu_photo_link
-      user.mu_highres_link = photo["highres_link"]
-      user.mu_thumb_link = photo["thumb_link"]
-      user.mu_photo_id = photo["photo_id"]
+
+      raw_info = h["extra"]["raw_info"]
+      if raw_info
+        user.mu_link = raw_info["link"]
+        self.raw_link = user.mu_link
+        user.city = raw_info["city"]
+        user.country = raw_info["country"]
+
+        photo = raw_info["photo"]
+        if photo
+          user.mu_highres_link = photo["highres_link"]
+          user.mu_thumb_link = photo["thumb_link"]
+          user.mu_photo_id = photo["photo_id"]
+        end
+      end
     end
 
     def update_github(user, h)
