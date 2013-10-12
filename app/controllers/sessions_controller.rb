@@ -53,6 +53,12 @@ class SessionsController < ApplicationController
     end
 
     def create_github
+      unless current_user.github_access
+        session[:first_github_sync] = true
+      else
+        session[:first_github_sync] = nil
+      end
+
       Access.transaction do
         Access.find_or_create_from_auth_hash(current_user, omniauth_hash)
       end
