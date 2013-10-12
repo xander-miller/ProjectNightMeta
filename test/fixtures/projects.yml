@@ -13,3 +13,17 @@ jane_blog:
   visible: false
   city: "Ottawa"
   country: "CA"
+
+del_blog:
+  id: 2
+  github_id: 89343
+  private: false
+  fork: false
+  name: "blog-weekly"
+  full_name: "del/blog-weekly"
+  description: "Del's World"
+  language: "Ruby, JavaScript"
+  user_id: 30
+  visible: true
+  city: "Ottawa"
+  country: "CA"

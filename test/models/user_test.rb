@@ -168,4 +168,45 @@ class UserTest < ActiveSupport::TestCase
     assert_equal projects.length, user.visible_projects.length, "Should match visible projects"
   end
 
+  test "full account" do
+    user = users(:deleteme)
+    assert_equal 2, user.accesses.length, "Should have 2 Access authorizations"
+    assert_equal accesses(:del_meetup), user.meetup_access, "Should match meetup Access"
+    assert_equal accesses(:del_github), user.github_access, "Should match github Access"
+
+    assert_equal 1, user.user_groups.length, "Should have 1 UserGroup"
+    assert_equal 1, user.groups.length, "Should have 1 Group"
+    assert_equal meetup_groups(:barjs), user.groups.first, "Should match Group"
+
+    jane_blog = projects(:jane_blog)
+    jane_blog.visible = true
+    jane_blog.save
+
+    assert_equal 1, user.projects.length, "Should own 1 Project"
+    assert_equal projects(:del_blog), user.projects.first, "Should match owned Project"
+
+    assert_equal 2, user.user_projects.length, "Should have 2 UserProject"
+    assert_equal 2, user.collaborations.length, "Should contribute to 2 Projects"
+    assert_equal 1, user.other_collaborations.length, "Should collaborate on 1 Project"
+    assert_equal jane_blog, user.other_collaborations.first, "Should match contribute Project"
+  end
+
+  test "full account delete" do
+    user = users(:deleteme)
+    del_id = user.id
+    mu_id = user.uid
+    User.transaction do
+      user.delete_account
+    end
+    assert_equal nil, User.find_by_id(del_id), "Should Not find User"
+    assert_equal 0, Access.where(user_id: del_id).length, "Should Not find any Access"
+    assert_equal 0, UserGroup.where(user_mu_id: mu_id).length, "Should Not find any UserGroup"
+    barjs = MeetupGroup.find_by_id 3
+    assert barjs, "Meetup Group Is still present"
+    del_blog = Project.find_by_id 2
+    assert_equal nil, del_blog, "Owned Project Is deleted"
+    assert_equal 0, UserProject.where(user_id: del_id).length, "Should Not find any UserProject"
+    jane_blog = Project.find_by_id 1
+    assert jane_blog, "Not owned collaboration Project is still present"
+  end
 end

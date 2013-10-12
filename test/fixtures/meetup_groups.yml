@@ -38,3 +38,21 @@ foojs:
   visibility: "public"
   who: "Foos"
 
+barjs:
+  id: 3
+  mu_id: 81325
+  mu_name: "Ottawa Bar.js"
+  mu_link: "http://www.meetup.com/BarJs/"
+  mu_photo_link: "http://photos1.meetupstatic.com/photos/event/d/9/e/6/600_3234232.jpeg"
+  mu_highres_link: "http://photos1.meetupstatic.com/photos/event/d/9/e/6/highres_3234232.jpeg"
+  mu_thumb_link: "http://photos1.meetupstatic.com/photos/event/d/9/e/6/thumb_3234232.jpeg"
+  mu_photo_id: 3234232
+  mu_organizer_id: 21
+  mu_organizer_name: "John User"
+  city: "Ottawa"
+  state: "ON"
+  country: "CA"
+  description: "<p>Group to learn about Bar.js</p>"
+  urlname: "OttawaBarJs"
+  visibility: "public"
+  who: "Bars"

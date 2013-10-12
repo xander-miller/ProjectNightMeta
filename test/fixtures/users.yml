@@ -26,3 +26,15 @@ jane:
   country: "CA"
   email: "jane@here"
 
+deleteme:
+  id: 30
+  provider: "meetup"
+  uid: 32345
+  mu_name: "Del User"
+  mu_link: "http://www.meetup.com/members/32345"
+  authentication_token: "qwerty123"
+  mu_photo_link: "http://photos3.meetupstatic.com/photos/member_pic_32345.jpeg"
+  mu_thumb_link: "http://photos1.meetupstatic.com/photos/member_pic_32345_thumb.jpeg"
+  city: "Ottawa"
+  country: "CA"
+  email: "delete@here"
