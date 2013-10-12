@@ -13,10 +13,10 @@ ProjectNightMeta::Application.routes.draw do
   get '/user/signout'  => 'sessions#signout'
   get '/auth/:provider/callback' => 'sessions#create'
 
-#  get  '/groups'        => 'groups#index'
-  get  '/groups/:id'    => 'groups#show'
-
+#  get  '/groups'          => 'groups#index'
+  get  '/groups/:id'      => 'groups#show'
   get  '/projects/:id'    => 'projects#show'
+  get  '/members/:id'     => 'members#show'
 
   get  '/user/account'                 => 'accounts#index'
   post '/user/account/update/profile'  => 'accounts#update_profile'

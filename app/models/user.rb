@@ -94,10 +94,17 @@ class User < ActiveRecord::Base
     users.index(self)
   end
 
+  def owns(project)
+    project.user_id == id
+  end
+
+  def other_collaborations
+    collaborations.reject { | ea | owns(ea) || ea.is_hidden }
+  end
+
 
   protected
     def access_by(provider="meetup")
       accesses.find { | ea | ea.provider == provider }
     end
-
 end
