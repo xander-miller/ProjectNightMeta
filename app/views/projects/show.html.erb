@@ -11,7 +11,7 @@
   <ul>Contributors
   <% @project.contributors.each do | user | %>
   <li>
-    <a href="/users/<%= user.id %>" title="<%= user.in_maintainers(@maintainers) ? "*" + user.mu_name : user.mu_name %>"><img src="<%= user.mu_thumb_link %>" /></a>
+    <a href="/members/<%= user.id %>" title="<%= user.in_maintainers(@maintainers) ? "*" + user.mu_name : user.mu_name %>"><img src="<%= user.mu_thumb_link %>" /></a>
   </li>
   <% end %>
   </ul>
