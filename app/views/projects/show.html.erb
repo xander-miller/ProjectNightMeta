@@ -1,0 +1,28 @@
+<h1><%= @title %>: <%= @project.full_name %></h1>
+
+<div class="project">
+  <p><%= @project.description %></p>
+  <% if @project.is_github %>
+  <p>fork: <%= @project.fork %> &nbsp; lang: <%= @project.language %> &nbsp; <a href="<%= @project.html_url %>">GitHub</a></p>
+  <% end %>
+</div>
+
+<div class="contributors">
+  <ul>Contributors
+  <% @project.contributors.each do | user | %>
+  <li>
+    <a href="/members/<%= user.id %>" title="<%= user.in_maintainers(@maintainers) ? "*" + user.mu_name : user.mu_name %>"><img src="<%= user.mu_thumb_link %>" /></a>
+  </li>
+  <% end %>
+  </ul>
+</div>
+
+<div class="groups">
+  <ul>Sightings
+  <% @project.user.groups.each do | group | %>
+  <li>
+    <a href="/groups/<%= group.urlname %>"><img src="<%= group.mu_thumb_link %>"/> <%= group.mu_name %></a>
+  </li>
+  <% end %>
+  </ul>
+</div>
