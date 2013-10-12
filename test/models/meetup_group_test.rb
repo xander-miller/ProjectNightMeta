@@ -105,7 +105,7 @@ class MeetupGroupTest < ActiveSupport::TestCase
     joe = users(:joe)
     assert_equal 2, joe.groups.length, "Should have 2 groups"
     groups = MeetupGroup.all
-    assert_equal 2, groups.length, "Should have total 2 groups"
+    assert_equal 3, groups.length, "Should have total 3 groups"
 
     group.remove(joe)
     group.reload
@@ -113,7 +113,7 @@ class MeetupGroupTest < ActiveSupport::TestCase
     joe.reload
     assert_equal 1, joe.groups.length, "Should have 1 group"
     groups.reload
-    assert_equal 2, groups.length, "Should have total 2 groups"
+    assert_equal 3, groups.length, "Should have total 3 groups"
   end
 
 end

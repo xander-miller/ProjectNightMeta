@@ -16,5 +16,12 @@
 notifications and announcements about our services.
   </p>
   </div>
-</div>
 
+  <hr />
+
+  <div>
+  <%= form_tag( "/user/account/delete", method: :delete ) do %>
+    <%= submit_tag "Delete my account..." %>
+  <% end %>
+  </div>
+</div>
