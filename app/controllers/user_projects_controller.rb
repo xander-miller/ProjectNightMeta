@@ -4,7 +4,7 @@ class UserProjectsController < ApplicationController
   # GET /user/projects
   def index
     if session[:first_github_sync]
-      sync_projects and return
+      sync and return
     end
 
     @title = "My Projects"
@@ -107,7 +107,7 @@ class UserProjectsController < ApplicationController
   end
 
   # POST /user/projects/sync
-  def sync_projects
+  def sync
     access = current_user.github_access
     unless access
       redirect_to "/auth/github"
