@@ -90,6 +90,10 @@ class User < ActiveRecord::Base
     access_by("meetup")
   end
 
+  def in_maintainers(users)
+    users.index(self)
+  end
+
 
   protected
     def access_by(provider="meetup")

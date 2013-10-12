@@ -16,6 +16,8 @@ ProjectNightMeta::Application.routes.draw do
   get  '/groups'        => 'groups#index'
   get  '/groups/:id'    => 'groups#show'
 
+  get  '/projects/:id'    => 'projects#show'
+
   get  '/user/account'                 => 'accounts#index'
   post '/user/account/update/profile'  => 'accounts#update_profile'
   post '/user/account/sync/groups'     => 'accounts#sync_groups'
