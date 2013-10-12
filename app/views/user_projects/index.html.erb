@@ -8,7 +8,7 @@
 
 <div id="projects">
   <div class="project-sync">
-  <%= form_tag "/user/account/sync/projects", {id: "sync_project_form"} do %>
+  <%= form_tag "/user/projects/sync", {id: "sync_project_form"} do %>
   <input id="sync_project_btn" type="submit" value="Sync GitHub projects now"/> | <%= link_to "New Project", "/user/projects/new" %>
   <% end %>
   </div>
