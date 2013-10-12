@@ -6,3 +6,14 @@ jane_blog:
   project_id: 1
   is_maintainer: true
 
+del_blog:
+  id: 2
+  user_id: 30
+  project_id: 2
+  is_maintainer: true
+
+del_contrib_jane:
+  id: 3
+  user_id: 30
+  project_id: 1
+  is_maintainer: false

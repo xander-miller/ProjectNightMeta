@@ -22,6 +22,7 @@ ProjectNightMeta::Application.routes.draw do
   post '/user/account/update/profile'  => 'accounts#update_profile'
   post '/user/account/sync/groups'     => 'accounts#sync_groups'
   post '/user/account/sync/projects'   => 'accounts#sync_projects'
+  delete '/user/account/delete'        => 'accounts#delete'
 
   get  '/user/groups'      => 'user_groups#index'
 

@@ -10,3 +10,7 @@ joe_foojs:
   user_mu_id: 12345
   group_mu_id: 521325
 
+del_barjs:
+  id: 3
+  user_mu_id: 32345
+  group_mu_id: 81325

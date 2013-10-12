@@ -3,7 +3,8 @@ class User < ActiveRecord::Base
   validates_presence_of   :uid, :mu_name, :mu_link, :provider
   validates_uniqueness_of :uid, scope: :provider
 
-  has_many :accesses, class_name: 'Access', foreign_key: :user_id, primary_key: :id
+  has_many :accesses, class_name: 'Access', foreign_key: :user_id, primary_key: :id,
+    dependent: :destroy
 
   has_many :user_groups, class_name: 'UserGroup', foreign_key: :user_mu_id, primary_key: :uid
   has_many :groups, through: :user_groups, source: :group
@@ -14,7 +15,8 @@ class User < ActiveRecord::Base
   has_many :collaborations, through: :user_projects, source: :project
 
   # projects I own
-  has_many :projects, -> { order("updated_at desc") }, class_name: 'Project', foreign_key: :user_id, primary_key: :id
+  has_many :projects, -> { order("updated_at desc") }, class_name: 'Project',
+    foreign_key: :user_id, primary_key: :id, dependent: :destroy
   has_many :visible_projects, -> { where(visible: true) },
     class_name: 'Project', foreign_key: :user_id, primary_key: :id
 
@@ -100,6 +102,12 @@ class User < ActiveRecord::Base
 
   def other_collaborations
     collaborations.reject { | ea | owns(ea) || ea.is_hidden }
+  end
+
+  def delete_account
+    collaborations.each { | project | project.remove(self) }
+    groups.each { | group | group.remove(self) }
+    destroy!
   end
 
 

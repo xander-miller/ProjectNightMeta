@@ -59,7 +59,7 @@ class ProjectTest < ActiveSupport::TestCase
   test "has contributors" do
     project = projects(:jane_blog)
     contributors = project.contributors
-    assert_equal 1, contributors.length, "Should have 1 contributor"
+    assert_equal 2, contributors.length, "Should have 2 contributor"
     user = users(:jane)
     assert_equal user, contributors.first, "Contributor is Jane"
   end
@@ -80,7 +80,7 @@ class ProjectTest < ActiveSupport::TestCase
     project.add_contributor(user)
     assert user.contributor_of?(project), "Joe should be a contributor"
     contributors = project.contributors
-    assert_equal 2, contributors.length, "Should have 2 contributors"
+    assert_equal 3, contributors.length, "Should have 3 contributors"
   end
 
   test "remove contributor" do
@@ -92,13 +92,13 @@ class ProjectTest < ActiveSupport::TestCase
     project.reload
     assert_equal false, user.contributor_of?(project), "Joe should Not be a contributor"
     contributors = project.contributors
-    assert_equal 1, contributors.length, "Should have 1 contributor"
+    assert_equal 2, contributors.length, "Should have 2 contributor"
   end
 
   test "destroy project" do
     project = projects(:jane_blog)
     contributors = project.contributors
-    assert_equal 1, contributors.length, "Should have 1 contributor"
+    assert_equal 2, contributors.length, "Should have 2 contributor"
     project_id = project.id
     assert project.destroy, "Should destroy"
     project = Project.find_by_id project_id

@@ -33,17 +33,17 @@ class AccountsController < ApplicationController
 
     redirect_to "/user/groups"
 
-    rescue Exception => e
-      if e.message.index('401')
-        clear_session
-        flash[:notice] = "Your session may have expired. Please Sign in to resume access."
-        redirect_to "/signin"
-        return
-      end
-      flash[:alert] = e.message
-      logger.info e.message
-      logger.info e.backtrace.join("\n")
-      redirect_to "/user/groups"
+  rescue Exception => e
+    if e.message.index('401')
+      clear_session
+      flash[:notice] = "Your session may have expired. Please Sign in to resume access."
+      redirect_to "/signin"
+      return
+    end
+    flash[:alert] = e.message
+    logger.info e.message
+    logger.info e.backtrace.join("\n")
+    redirect_to "/user/groups"
   end
 
   # POST /user/account/sync/projects
@@ -73,15 +73,27 @@ class AccountsController < ApplicationController
 
     redirect_to "/user/projects"
 
-    rescue Exception => e
-      if e.message.index('401')
-        redirect_to "/auth/github"
-        return
-      end
-      flash[:alert] = e.message
-      logger.info e.message
-      logger.info e.backtrace.join("\n")
-      redirect_to "/user/projects"
+  rescue Exception => e
+    if e.message.index('401')
+      redirect_to "/auth/github"
+      return
+    end
+    flash[:alert] = e.message
+    logger.info e.message
+    logger.info e.backtrace.join("\n")
+    redirect_to "/user/projects"
+  end
+
+  # DELETE /user/account/delete
+  def delete
+    User.transaction do
+      current_user.delete_account
+    end
+    clear_session
+    redirect_to "/"
+
+  rescue Exception => e
+    log_error_and_redirect_to(e, '/user/account')
   end
 
 
@@ -149,5 +161,4 @@ class AccountsController < ApplicationController
         flash[:alert] = "Failed to sync #{fail_count} project(s)."
       end
     end
-
 end
