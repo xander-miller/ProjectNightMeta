@@ -98,6 +98,11 @@ class Project < ActiveRecord::Base
     !github_id.blank?
   end
 
+  def is_hidden
+    !visible
+  end
+
+
   protected
     def destroy_project_users
       project_users.each { | assoc |

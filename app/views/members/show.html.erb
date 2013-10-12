@@ -1,0 +1,37 @@
+<h1><%= @member.mu_name %></h1>
+
+<div class="profile-photo">
+  <p><a href="<%= @member.mu_link %>" title="Meetup page"><img src="<%= @member.mu_photo_link %>"/></a></p>
+</div>
+
+<h2>My Projects</h2>
+<div class="projects">
+  <ul>Maintaining
+  <% @member.visible_projects.each do | project | %>
+  <li>
+    <a href="/projects/<%= project.id %>"><%= project.full_name %></a> &nbsp; lang: <%= project.language %>
+  </li>
+  <% end %>
+  </ul>
+
+  <% unless @other_projects.blank? %>
+  <ul>Collaborating
+  <% @other_projects.each do | project | %>
+  <li>
+    <a href="/projects/<%= project.id %>"><%= project.full_name %></a> &nbsp; lang: <%= project.language %>
+  </li>
+  <% end %>
+  </ul>
+  <% end %>
+</div>
+
+<h2>My Meetup Groups</h2>
+<div class="groups">
+  <ul>
+  <% @member.groups.each do | group | %>
+  <li>
+    <a href="/groups/<%= group.urlname %>"><img src="<%= group.mu_thumb_link %>"/> <%= group.mu_name %></a>
+  </li>
+  <% end %>
+  </ul>
+</div>
