@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
 
   protected
 
-    # before_filter for accessing user pages
+    # before_action for accessing user pages
     def check_authorized
       if session[:mu_uid]
         current_user
@@ -30,6 +30,7 @@ class ApplicationController < ActionController::Base
       session[:mu_uid] = nil
       session[:mu_name] = nil
       session[:provider] = nil
+      session[:manage_contributor_id] = nil
     end
 
     def log_error_and_redirect_to(error, url_path)

@@ -1,10 +1,14 @@
 class UserProjectsController < ApplicationController
-  before_filter :check_authorized
+  before_action :check_authorized
 
   # GET /user/projects
   def index
     if session[:first_github_sync]
       sync and return
+    end
+
+    if session[:manage_contributor_id]
+      @contributor = User.find_by_id session[:manage_contributor_id]
     end
 
     @title = "My Projects"
@@ -31,13 +35,13 @@ class UserProjectsController < ApplicationController
       format.json { render json: project }
     end
 
-    rescue Exception => e
-      log_error_and_redirect_to(e, '/user/projects/new')
+  rescue Exception => e
+    log_error_and_redirect_to(e, '/user/projects/new')
   end
 
   # GET /user/projects/:id/edit
   def edit
-    @project = Project.find_by_id params[:id]
+    @project = find_project
     unless @project
       redirect_to "/404"
       return
@@ -52,7 +56,8 @@ class UserProjectsController < ApplicationController
 
   # PUT /user/projects/:id
   def update
-    project = Project.find params[:id]
+    project = find_project
+    raise ActiveRecord::RecordNotFound unless project
     raise "Cannot update. GitHub project should be synced instead." if project.is_github
     Project.transaction do
       project.update(project_params)
@@ -65,17 +70,16 @@ class UserProjectsController < ApplicationController
       format.json { render json: project }
     end
 
-    rescue Exception => e
-      log_error_and_redirect_to(e, '/user/projects')
+  rescue ActiveRecord::RecordNotFound => e
+    log_error_and_redirect_to(e, '/404')
+  rescue Exception => e
+    log_error_and_redirect_to(e, '/user/projects')
   end
 
   # DELETE /user/projects/:id
   def delete
-    project = Project.find_by_id params[:id]
-    unless project
-      redirect_to "/404"
-      return
-    end
+    project = find_project
+    raise ActiveRecord::RecordNotFound unless project
     raise "Cannot delete. GitHub project should be synced instead." if project.is_github
 
     Project.transaction do
@@ -87,13 +91,16 @@ class UserProjectsController < ApplicationController
       format.json { head :ok }
     end
 
-    rescue Exception => e
-      log_error_and_redirect_to(e, '/user/projects')
+  rescue ActiveRecord::RecordNotFound => e
+    log_error_and_redirect_to(e, '/404')
+  rescue Exception => e
+    log_error_and_redirect_to(e, '/user/projects')
   end
 
   # PUT /user/projects/:id/toggle
   def toggle_visible
-    project = Project.find params[:id]
+    project = find_project
+    raise ActiveRecord::RecordNotFound unless project
     project.toggle(:visible)
     project.save!
 
@@ -102,8 +109,10 @@ class UserProjectsController < ApplicationController
       format.json { render json: project }
     end
 
-    rescue Exception => e
-      log_error_and_redirect_to(e, '/user/projects')
+  rescue ActiveRecord::RecordNotFound => e
+    log_error_and_redirect_to(e, '/404')
+  rescue Exception => e
+    log_error_and_redirect_to(e, '/user/projects')
   end
 
   # POST /user/projects/sync
@@ -146,6 +155,54 @@ class UserProjectsController < ApplicationController
     session[:first_github_sync] = nil
   end
 
+  # PUT /user/projects/:id/add/contributor
+  def add_contributor
+    unless session[:manage_contributor_id]
+      flash[:notice] = "Nothing to do. No Contributor selected."
+      redirect_to "/user/projects" and return
+    end
+
+    user = User.find_by_id(session[:manage_contributor_id])
+    raise "Contributor not found." unless user
+ 
+    project = find_project
+    raise "Project not found." unless project
+
+    Project.transaction do
+      project.add_contributor(user)
+    end
+
+    flash[:notice] = "Contributor added to Project."
+    redirect_to "/user/projects"
+
+  rescue Exception => e
+    log_error_and_redirect_to(e, "/user/projects")
+  end
+
+  # PUT /user/projects/:id/remove/contributor
+  def remove_contributor
+    unless session[:manage_contributor_id]
+      flash[:notice] = "Nothing to do. No Contributor selected."
+      redirect_to "/user/projects" and return
+    end
+
+    user = User.find_by_id(session[:manage_contributor_id])
+    raise "Contributor not found." unless user
+ 
+    project = find_project
+    raise "Project not found." unless project
+
+    Project.transaction do
+      project.remove(user)
+    end
+
+    flash[:notice] = "Contributor remove from Project."
+    redirect_to "/user/projects"
+
+  rescue Exception => e
+    log_error_and_redirect_to(e, "/user/projects")
+  end
+
 
   private
     def project_params
@@ -178,5 +235,9 @@ class UserProjectsController < ApplicationController
       if fail_count > 0
         flash[:alert] = "Failed to sync #{fail_count} project(s)."
       end
+    end
+
+    def find_project
+      Project.where(id: params[:id], user_id: current_user.id).first
     end
 end

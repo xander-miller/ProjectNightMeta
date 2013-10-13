@@ -37,6 +37,17 @@
         <%= submit_tag "delete" %>
       <% end %>
       <% end %>
+      <% if @contributor %>
+        <% if !@contributor.contributor_of?(project) %>
+          <%= form_tag( "/user/projects/#{project.id}/add/contributor", method: :put ) do %>
+          <%= submit_tag "Add #{@contributor.mu_name}", {title: "Add Contributor"} %>
+          <% end %>
+        <% else %>
+          <%= form_tag( "/user/projects/#{project.id}/remove/contributor", method: :put ) do %>
+          <%= submit_tag "Remove #{@contributor.mu_name}", {title: "Remove Contributor"} %>
+          <% end %>
+        <% end %>
+      <% end %>
     </div>
   </li>
   <% end %>
