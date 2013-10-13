@@ -68,6 +68,8 @@ class Project < ActiveRecord::Base
   end
 
   def remove(user)
+    return false if user.owns(self) # should never remove owner
+
     assoc = UserProject.entry(user, self)
     assoc.destroy! if assoc
     true

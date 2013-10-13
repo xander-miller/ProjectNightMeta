@@ -1,5 +1,5 @@
 class AccountsController < ApplicationController
-  before_filter :check_authorized
+  before_action :check_authorized
 
   # GET /user/account
   def index
