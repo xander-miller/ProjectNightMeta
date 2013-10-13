@@ -17,6 +17,7 @@ ProjectNightMeta::Application.routes.draw do
   get  '/groups/:id'      => 'groups#show'
   get  '/projects/:id'    => 'projects#show'
   get  '/members/:id'     => 'members#show'
+  get  '/members/:id/manage'   => 'members#manage'
 
   get  '/user/account'                 => 'accounts#index'
   post '/user/account/update/profile'  => 'accounts#update_profile'
@@ -33,6 +34,8 @@ ProjectNightMeta::Application.routes.draw do
   put  '/user/projects/:id'      => 'user_projects#update'
   delete '/user/projects/:id'    => 'user_projects#delete'
   post '/user/projects/sync'   => 'user_projects#sync'
+  put  '/user/projects/:id/add/contributor' => 'user_projects#add_contributor'
+  put  '/user/projects/:id/remove/contributor' => 'user_projects#remove_contributor'
 
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
