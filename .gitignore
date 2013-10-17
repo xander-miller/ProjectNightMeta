@@ -27,5 +27,11 @@ config/database.yml
 #
 config/initializers/omniauth.rb
 
+# don't track config/initializers/meetup.rb - it contains meetup API KEY
+#
+# make copy of config/initializers/meetup.rb.template then add your API KEY
+#
+config/initializers/meetup.rb
+
 # don't track tmp/
 tmp/*

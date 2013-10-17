@@ -1,34 +1,55 @@
 <h1><%= @title %>: <%= @group.mu_name %></h1>
 
 <div class="group-img">
-  <img src="<%= @group.mu_thumb_link %>"/>
-  <a href="<%= @group.mu_link %>">Meetup</a>
+  <a href="<%= @group.mu_link %>" title="Meetup Group home"><img src="<%= @group.mu_thumb_link %>"/></a>
 </div>
 
 <div class="events">
   <h2>Upcoming Event</h2>
-
-  <p>Event summary goes here</p>
+<% if @event %>
+  <h4><a href="<%= @event.event_url %>" title="Meetup Event detail"><%= @event.name %></a></h4>
+  <%= @event.time %> &nbsp; RSVP'd: <%= @event.yes_rsvp_count %>
+  <% if session[:mu_uid] %>
+  <address>
+  <strong><%= @event.venue_name %></strong><br/>
+  <%= @event.venue_street %>,
+  <%= @event.venue_city %>
+  </address>
+  <% end %>
+<% end %>
 </div>
 
 <div class="members">
-  <h2><%= @group.who %></h2>
-  <ul>Who's going
-  <% @rsvps.each do | user | %>
-  <li>
-    <a href="/members/<%= user.id %>" title="<%= user.mu_name %>"><img src="<%= user.mu_thumb_link %>" /></a>
-    <div class="user-projects">
-      <ul>Projects
-      <% user.visible_projects.each do | project | %>
-      <li><a href="/projects/<%= project.id %>" title="<%= project.description %>"><%= project.full_name %></a></li>
-      <% end %>
-      </ul>
-    </div>
-  </li>
-  <% end %>
+  <h3><%= @group.who %></h3>
+  <% if @event %>
+  <h4>Going</h4>
+
+  <ul>
+    <% unless @rsvps.blank? %>
+    <% @rsvps.each do | user | %>
+    <li>
+      <a href="/members/<%= user.id %>" title="<%= user.mu_name %>"><img src="<%= user.mu_thumb_link %>" /></a>
+      <div class="user-projects">
+        <ul>Projects
+        <% user.visible_projects.each do | project | %>
+        <li><a href="/projects/<%= project.id %>" title="<%= project.description %>"><%= project.full_name %></a></li>
+        <% end %>
+        </ul>
+      </div>
+    </li>
+    <% end %>
+    <% else %>
+      <li>No Project Night members has RSVP'd yet.</li>
+    <% end %>
   </ul>
 
-  <ul>Haven't decided
+  <% unless @non_rsvps.blank? %>
+  <h4>Undecided</h4>
+  <% end %>
+
+  <% end %>
+
+  <ul>
   <% @non_rsvps.each do | user | %>
   <li>
     <a href="/members/<%= user.id %>" title="<%= user.mu_name %>"><img src="<%= user.mu_thumb_link %>" /></a>

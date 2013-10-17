@@ -8,7 +8,8 @@
 </div>
 
 <div class="contributors">
-  <ul>Contributors
+  <h4>Contributors</h4>
+  <ul>
   <% @project.contributors.each do | user | %>
   <li>
     <a href="/members/<%= user.id %>" title="<%= user.in_maintainers(@maintainers) ? "*" + user.mu_name : user.mu_name %>"><img src="<%= user.mu_thumb_link %>" /></a>
@@ -18,7 +19,8 @@
 </div>
 
 <div class="groups">
-  <ul>Sightings
+  <h4>Find <%= @project.user.mu_name %> at these Meetup Groups</h4>
+  <ul>
   <% @project.user.groups.each do | group | %>
   <li>
     <a href="/groups/<%= group.urlname %>"><img src="<%= group.mu_thumb_link %>"/> <%= group.mu_name %></a>

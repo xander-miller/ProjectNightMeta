@@ -1,0 +1,2 @@
+require 'ruby_meetup'
+RubyMeetup::ApiKeyClient.key='your-api-key'

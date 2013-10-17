@@ -11,10 +11,20 @@ class GroupsController < ApplicationController
     @group = MeetupGroup.find_by_muid_or_urlname(params[:id])
 
     # get upcoming event and RSVPs
-    # build RSVP list
+    @event = @group.next_event
     @rsvps = []
-    # build non-RSVP list
-    @non_rsvps = @group.users
+    @non_rsvps = []
+    if @event
+      @group.users.each { | user |
+        if @event.has_rsvp(user.uid)
+          @rsvps << user
+        else
+          @non_rsvps << user
+        end
+      }
+    else
+      @non_rsvps = @group.users
+    end
 
     respond_to do |format|
       format.html {
