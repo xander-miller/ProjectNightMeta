@@ -78,4 +78,17 @@ class MeetupGroup < ActiveRecord::Base
     "#{city}, #{state}"
   end
 
+  def upcoming_events
+    unless @events
+      @events = EventResource.where({group_id: mu_id, time: "0,1m"})
+      @events.each do | event |
+        event.group = self
+      end
+    end
+    @events
+  end
+  def next_event
+    return nil if upcoming_events.blank?
+    upcoming_events.first 
+  end
 end
