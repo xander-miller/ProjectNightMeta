@@ -9,34 +9,25 @@ class GroupsController < ApplicationController
   # GET /groups/:id
   def show
     @group = MeetupGroup.find_by_muid_or_urlname(params[:id])
+    raise ActiveRecord::RecordNotFound unless @group
 
     # get upcoming event and RSVPs
     @event = @group.next_event
-    @rsvps = []
-    @non_rsvps = []
+    @confirms = []
+    @unconfirms = []
     if @event
-      @group.users.each { | user |
-        if @event.has_rsvp(user.uid)
-          @rsvps << user
-        else
-          @non_rsvps << user
-        end
-      }
+      @confirms = @event.confirmed_users
+      @unconfirms = @event.unconfirmed_users
     else
-      @non_rsvps = @group.users
+      @unconfirms = @group.users
     end
 
     respond_to do |format|
       format.html {
-        unless @group
-          redirect_to "/404"
-          return
-        end
         @title = "Group"
       }
       format.json {
-        raise ActiveRecord::RecordNotFound unless @group
-        render json: {group: @group, rsvps: @rsvps, non_rsvps: @non_rsvps}
+        render json: {group: @group}
       }
     end
   rescue ActiveRecord::RecordNotFound => e

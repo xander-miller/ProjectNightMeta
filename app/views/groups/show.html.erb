@@ -25,8 +25,8 @@
   <h4>Going</h4>
 
   <ul>
-    <% unless @rsvps.blank? %>
-    <% @rsvps.each do | user | %>
+    <% unless @confirms.blank? %>
+    <% @confirms.each do | user | %>
     <li>
       <a href="/members/<%= user.id %>" title="<%= user.mu_name %>"><img src="<%= user.mu_thumb_link %>" /></a>
       <div class="user-projects">
@@ -43,14 +43,14 @@
     <% end %>
   </ul>
 
-  <% unless @non_rsvps.blank? %>
+  <% unless @unconfirms.blank? %>
   <h4>Undecided</h4>
   <% end %>
 
   <% end %>
 
   <ul>
-  <% @non_rsvps.each do | user | %>
+  <% @unconfirms.each do | user | %>
   <li>
     <a href="/members/<%= user.id %>" title="<%= user.mu_name %>"><img src="<%= user.mu_thumb_link %>" /></a>
   </li>

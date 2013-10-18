@@ -1,6 +1,7 @@
 class EventResource < MeetupResource
 
-  attr_accessor :id, :name, :event_url, :yes_rsvp_count, :venue, :time, :description
+  attr_accessor :id, :name, :event_url, :yes_rsvp_count, :venue, :time,
+    :description, :group
 
 
   def build_with(hash)
@@ -30,6 +31,22 @@ class EventResource < MeetupResource
 
   def has_rsvp(uid)
     rsvps.detect { | ea | uid == ea.member_id }
+  end
+
+  def confirmed_users
+    confirms = []
+    group.users.each { | user |
+      confirms << user if has_rsvp(user.uid)
+    }
+    confirms
+  end
+
+  def unconfirmed_users
+    unconfirms = []
+    group.users.each { | user |
+      unconfirms << user unless has_rsvp(user.uid)
+    }
+    unconfirms
   end
 
 
