@@ -1,5 +1,4 @@
 class MeetupResource
-  @@client = RubyMeetup::ApiKeyClient.new
 
   def self.where(options={})
     s = client.get_path(path, options)
@@ -25,7 +24,7 @@ class MeetupResource
 
   protected
     def self.client
-      @@client
+      RubyMeetup::ApiKeyClient.new
     end
  
     def self.path
