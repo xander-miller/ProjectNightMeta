@@ -29,12 +29,21 @@ class Location
     location
   end
 
+  def self.new_string(s)
+    a = s.split(",")
+    location = new
+    location.city = a.length > 0 ? a[0].strip : ''
+    location.region = a.length > 1 ? a[1].strip : ''
+    location.country = a.length > 2 ? a[2].strip : ''
+    location
+  end
+
 
   def to_s
     s = ""
-    s << (city + ", ") unless city.blank?
-    s << (region + ", ") unless region.blank?
-    s << country
+    s << city unless city.blank?
+    s << (", " + region) unless region.blank?
+    s << (", " + country) unless country.blank?
     s
   end
 end

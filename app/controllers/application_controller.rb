@@ -19,7 +19,6 @@ class ApplicationController < ActionController::Base
 
     # before_action setting visitor location
     def set_location
-      session[:ip_city] = nil
       if session[:ip_city].nil?
 
         finder = LocationFinder.new

@@ -26,7 +26,7 @@ class LocationFinder
   end
 
   def build_gateway_ip
-    ip = ipaddr == '127.0.0.1' ? '66.249.75.176' : ipaddr
+    ip = ipaddr == '127.0.0.1' ? '24.246.4.1' : ipaddr
     a = ip.split('.')
     a.pop
     a.push('1')

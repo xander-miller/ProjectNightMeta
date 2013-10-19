@@ -9,6 +9,7 @@ ProjectNightMeta::Application.routes.draw do
   #   get 'products/:id' => 'catalog#view'
 
   get '/about'    => 'home#about'
+  put '/location/change'  => 'home#change_city'
   get '/signin'        => 'sessions#index'
   get '/user/signout'  => 'sessions#signout'
   get '/auth/:provider/callback' => 'sessions#create'

@@ -1,10 +1,11 @@
 <h1><%= @title %></h1>
 
 <div id="location">
-<p>Current Location<br/>
-FreeGeoIp: <%= @freegeoip %><br />
-Meetup: <%= get_location %>
-</p>
+  <%= form_tag "/location/change", {id: "location_form", method: :put} do %>
+  <p><input class="location-field" type="text" name="location" size="30" maxlength="255" placeholder="Ottawa, ON, CA" value="<%= get_location %>" />
+  <%= submit_tag "Change Location" %>
+  </p>
+  <% end %>
 </div>
 
 <div class="projects">
