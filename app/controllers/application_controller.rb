@@ -21,12 +21,7 @@ class ApplicationController < ActionController::Base
     def set_location
       if session[:ip_city].nil?
 
-        finder = LocationFinder.new
-        finder.ipaddr = request.remote_ip
-        @freegeoip = finder.lookup_freegeoip
-        location = finder.lookup_meetup(@freegeoip)
-        #location = LocationFinder.find_by_ip(request.remote_ip)
-
+        location = LocationFinder.find_by_ip(request.remote_ip)
         session[:ip_city] = location.city
         session[:ip_region] = location.region
         session[:ip_country] = location.country
