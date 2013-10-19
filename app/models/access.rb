@@ -69,7 +69,8 @@ class Access < ActiveRecord::Base
         user.mu_link = raw_info["link"]
         self.raw_link = user.mu_link
         user.city = raw_info["city"]
-        user.country = raw_info["country"]
+        user.state = raw_info["state"].upcase unless raw_info["state"].blank?
+        user.country = raw_info["country"].upcase unless raw_info["country"].blank?
 
         photo = raw_info["photo"]
         if photo
@@ -77,6 +78,12 @@ class Access < ActiveRecord::Base
           user.mu_thumb_link = photo["thumb_link"]
           user.mu_photo_id = photo["photo_id"]
         end
+      else
+        # no raw_info section, try get location from info section
+        location = Location.new_string(info["location"])
+        user.city = location.city
+        user.state = location.region.upcase unless location.region.blank?
+        user.country = location.country.upcase unless location.country.blank?
       end
     end
 

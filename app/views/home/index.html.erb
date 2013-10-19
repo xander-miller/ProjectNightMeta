@@ -1,6 +1,17 @@
 <h1><%= @title %></h1>
 
+<div id="location">
+  <%= form_tag "/location/change", {id: "location_form", method: :put} do %>
+  <p><input class="location-field" type="text" name="location" size="30" maxlength="255" placeholder="Ottawa, ON, CA" value="<%= get_location %>" />
+  <%= submit_tag "Change Location" %>
+  </p>
+  <% end %>
+</div>
+
 <div class="projects">
+  <% if @projects.blank? %>
+  <p>There are no visible projects. Try changing your location<% if session[:mu_id].blank? %> or <a href="/signin">Sign in</a> to create projects<% end %>.</p>
+  <% else %>
   <ul>
   <% @projects.each do | project | %>
   <li>
@@ -11,5 +22,6 @@
   </li>
   <% end %>
   </ul>
+  <% end %>
 </div>
 
