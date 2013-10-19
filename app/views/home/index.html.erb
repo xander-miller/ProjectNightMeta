@@ -1,6 +1,16 @@
 <h1><%= @title %></h1>
 
+<div id="location">
+<p>Current Location<br/>
+FreeGeoIp: <%= @freegeoip %><br />
+Meetup: <%= get_location %>
+</p>
+</div>
+
 <div class="projects">
+  <% if @projects.blank? %>
+  <p>There are no visible projects. Try changing your location<% if session[:mu_id].blank? %> or <a href="/signin">Sign in</a> to create projects<% end %>.</p>
+  <% else %>
   <ul>
   <% @projects.each do | project | %>
   <li>
@@ -11,5 +21,6 @@
   </li>
   <% end %>
   </ul>
+  <% end %>
 </div>
 

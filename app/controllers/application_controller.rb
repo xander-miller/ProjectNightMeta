@@ -19,21 +19,20 @@ class ApplicationController < ActionController::Base
 
     # before_action setting visitor location
     def set_location
+      session[:ip_city] = nil
       if session[:ip_city].nil?
-        ip = request.remote_ip == '127.0.0.1' ? '24.246.4.1' : request.remote_ip
-        a = ip.split('.')
-        a.pop
-        a.push('1')
 
-        client = GeoIpClient.new
-        s = client.get_path('/' + a.join('.'))
+        finder = LocationFinder.new
+        finder.ipaddr = request.remote_ip
+        @freegeoip = finder.lookup_freegeoip
+        location = finder.lookup_meetup(@freegeoip)
+        #location = LocationFinder.find_by_ip(request.remote_ip)
 
-        hash = ActiveSupport::JSON.decode(s)
-        session[:ip_city] = hash["city"]
-        session[:ip_region] = hash["region_code"]
-        session[:ip_country] = hash["country_code"]
+        session[:ip_city] = location.city
+        session[:ip_region] = location.region
+        session[:ip_country] = location.country
 
-        logger.info "* location: #{session[:ip_city]}, #{session[:ip_region]}, #{session[:ip_country]}"
+        logger.info "* location: #{location}"
       end
       true
     rescue Exception => e
