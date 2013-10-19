@@ -69,7 +69,7 @@ class Access < ActiveRecord::Base
         user.mu_link = raw_info["link"]
         self.raw_link = user.mu_link
         user.city = raw_info["city"]
-        user.country = raw_info["country"]
+        user.country = raw_info["country"].upcase
 
         photo = raw_info["photo"]
         if photo

@@ -49,6 +49,11 @@ class SessionsController < ApplicationController
       session[:mu_uid] = user.uid
       session[:mu_name] = user.mu_name
       session[:provider] = user.provider
+      # set location if needed
+      if session[:ip_city].blank?
+        session[:ip_city] = user.city
+        session[:ip_country] = user.country.upcase  # CA
+      end
       user
     end
 
