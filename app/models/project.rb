@@ -42,6 +42,7 @@ class Project < ActiveRecord::Base
       # no owner, set the project owner now
       self.user = user
       self.city = user.city
+      self.state = user.state
       self.country = user.country
       save!
     end

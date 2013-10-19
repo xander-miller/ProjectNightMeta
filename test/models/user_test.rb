@@ -16,7 +16,8 @@ class UserTest < ActiveSupport::TestCase
     assert_equal raw_info["name"], user.mu_name, "mu_name should match"
     assert_equal raw_info["link"], user.mu_link, "mu_link should match"
     assert_equal raw_info["city"], user.city, "city should match"
-    assert_equal raw_info["country"], user.country, "country should match"
+    assert_equal raw_info["state"], user.state, "state should match"
+    assert_equal raw_info["country"].upcase, user.country, "country should match"
 
     photo = raw_info["photo"]
     assert_equal photo["photo_link"], user.mu_photo_link, "mu_photo_link should match"

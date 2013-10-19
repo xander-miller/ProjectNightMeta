@@ -71,6 +71,7 @@ class ProjectTest < ActiveSupport::TestCase
     user = users(:jane)
     assert_equal user, maintainers.first, "Maintainer is Jane"
     assert_equal user.city, project.city, "Should match city"
+    assert_equal user.state, project.state, "Should match state"
     assert_equal user.country, project.country, "Should match country"
   end
 

@@ -52,6 +52,7 @@ class SessionsController < ApplicationController
 
       # set my default location
       session[:ip_city] = user.city
+      session[:ip_region] = user.state
       session[:ip_country] = user.country.upcase  # CA
 
       user

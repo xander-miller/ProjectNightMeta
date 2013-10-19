@@ -41,6 +41,7 @@ class ActiveSupport::TestCase
             "photo_id"=>111
           },
           "city"=>"Memphis",
+          "state" => "TN",
           "country"=>"us",
           "visited"=>1325001005000,
           "id"=>12345,

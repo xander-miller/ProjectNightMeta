@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131010043822) do
+ActiveRecord::Schema.define(version: 20131019201055) do
 
   create_table "accesses", force: true do |t|
     t.integer  "user_id",                           null: false
@@ -74,12 +74,15 @@ ActiveRecord::Schema.define(version: 20131010043822) do
     t.boolean  "visible",     default: false
     t.string   "city"
     t.string   "country"
+    t.string   "state",       default: "ON"
   end
 
   add_index "projects", ["city"], name: "index_projects_on_city", using: :btree
   add_index "projects", ["full_name"], name: "index_projects_on_full_name", using: :btree
+  add_index "projects", ["language"], name: "index_projects_on_language", using: :btree
   add_index "projects", ["owner_id"], name: "index_projects_on_owner_id", using: :btree
   add_index "projects", ["user_id"], name: "index_projects_on_user_id", using: :btree
+  add_index "projects", ["visible"], name: "index_projects_on_visible", using: :btree
 
   create_table "user_groups", force: true do |t|
     t.integer  "user_mu_id",                 null: false
@@ -126,6 +129,7 @@ ActiveRecord::Schema.define(version: 20131010043822) do
     t.integer  "mu_photo_id"
     t.string   "city"
     t.string   "country"
+    t.string   "state",                default: "ON"
   end
 
   add_index "users", ["city"], name: "index_users_on_city", using: :btree

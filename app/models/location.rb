@@ -42,7 +42,11 @@ class Location
   def to_s
     s = ""
     s << city unless city.blank?
-    s << (", " + region) unless region.blank?
+    if region.blank?
+      s << ", " unless country.blank?
+    else
+      s << (", " + region)
+    end
     s << (", " + country) unless country.blank?
     s
   end

@@ -65,7 +65,8 @@ class AccessTest < ActiveSupport::TestCase
     assert_equal raw_info["link"], access.raw_link, "raw_link should match"
     assert_equal raw_info["link"], user.mu_link, "mu_link should match - cached"
     assert_equal raw_info["city"], user.city, "city should match"
-    assert_equal raw_info["country"], user.country, "country should"
+    assert_equal raw_info["state"], user.state, "state should match"
+    assert_equal raw_info["country"].upcase, user.country, "country should"
 
     photo = raw_info["photo"]
     assert_equal photo["photo_link"], access.raw_photo_link, "raw_photo_link should match"
