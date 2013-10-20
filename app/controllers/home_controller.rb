@@ -6,7 +6,7 @@ class HomeController < ApplicationController
     hash = build_conditions
     order = "updated_at desc, language, full_name"
     @projects = Project.where(hash).order(order).offset(0).limit(50)
-    @title = "Home"
+    @title = "Member Projects"
   end
 
   # GET /about
