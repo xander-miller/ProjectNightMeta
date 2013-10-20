@@ -1,30 +1,46 @@
-<h1><%= @title %>: <%= @project.full_name %></h1>
+<div class="jumbotron">
+<h2><% if @project.is_github -%>
+    <img src="/images/GitHub-Mark-32px.png" title="GitHub project" />&nbsp;
+  <% else -%>
+    <span class="glyphicon glyphicon-folder-open" title="Project" />
+  <% end -%>
+  <%= @project.full_name %></h2>
 
-<div class="project">
+<div class="container">
   <p><%= @project.description %></p>
   <% if @project.is_github %>
-  <p>fork: <%= @project.fork %> &nbsp; lang: <%= @project.language %> &nbsp; <a href="<%= @project.html_url %>">GitHub</a></p>
+    <p class="project-lang"><%= @project.language %> &nbsp; fork: <%= @project.fork %> &nbsp; <a href="<%= @project.html_url %>">Fork on GitHub</a></p>
   <% end %>
+</div>
 </div>
 
 <div class="contributors">
-  <h4>Contributors</h4>
-  <ul>
+  <h3>Contributors <span class="glyphicon glyphicon-user" /></h3>
+  <ul class="ul-thumb">
   <% @project.contributors.each do | user | %>
-  <li>
-    <a href="/members/<%= user.id %>" title="<%= user.in_maintainers(@maintainers) ? "*" + user.mu_name : user.mu_name %>"><img src="<%= user.mu_thumb_link %>" /></a>
-  </li>
+    <li>
+      <a href="/members/<%= user.id %>" title="<%= get_user_name(user, @maintainers) %>"><img class="img-thumbnail" src="<%= user.mu_thumb_link %>" alt="<%= get_user_name(user, @maintainers) %>" /></a>
+    </li>
   <% end %>
   </ul>
 </div>
 
 <div class="groups">
-  <h4>Find <%= @project.user.mu_name %> at these Meetup Groups</h4>
-  <ul>
+  <h3>Find <%= @project.user.mu_name %> at these Meetup Groups <span class="glyphicon glyphicon-th-large" /></h3>
+  <div class="row">
   <% @project.user.groups.each do | group | %>
-  <li>
-    <a href="/groups/<%= group.urlname %>"><img src="<%= group.mu_thumb_link %>"/> <%= group.mu_name %></a>
-  </li>
+  <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+    <div class="thumbnail">
+      <a href="/groups/<%= group.urlname %>">
+      <div class="caption">
+        <img class="img-rounded" src="<%= group.mu_thumb_link %>"/>
+        <div class="caption">
+        <%= group.mu_name %>
+        </div>
+      </div>
+      </a>
+    </div>
+  </div>
   <% end %>
-  </ul>
+  </div>
 </div>
