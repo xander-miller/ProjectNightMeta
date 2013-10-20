@@ -8,7 +8,7 @@
   <h2>Upcoming Event</h2>
 <% if @event %>
   <h4><a href="<%= @event.event_url %>" title="Meetup Event detail"><%= @event.name %></a></h4>
-  <%=raw format_event_datetime(@event.time) %> &nbsp; RSVP'd: <%= @event.yes_rsvp_count %>
+  <%=raw format_event_datetime(@event.time_in_zone) %> &nbsp; RSVP'd: <%= @event.yes_rsvp_count %>
   <% if session[:mu_uid] %>
   <address>
   <strong><%= @event.venue_name %></strong><br/>

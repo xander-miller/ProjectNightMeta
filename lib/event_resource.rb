@@ -1,7 +1,7 @@
 class EventResource < MeetupResource
 
   attr_accessor :id, :name, :event_url, :yes_rsvp_count, :venue, :time,
-    :description, :group
+    :utc_offset, :description, :group
 
 
   def build_with(hash)
@@ -10,7 +10,8 @@ class EventResource < MeetupResource
     self.event_url = hash["event_url"]
     self.yes_rsvp_count = hash["yes_rsvp_count"]
     self.venue = hash["venue"]
-    self.time = Time.at(hash["time"]/1000)
+    self.time = hash["time"]
+    self.utc_offset = hash["utc_offset"]
     self.description = hash["description"]
   end
 
@@ -47,6 +48,12 @@ class EventResource < MeetupResource
       unconfirms << user unless has_rsvp(user.uid)
     }
     unconfirms
+  end
+
+  # Datetime in the event's zone
+  def time_in_zone
+    # Time.zone should be UTC
+    Time.zone.at((time+utc_offset)/1000)
   end
 
 
