@@ -32,8 +32,10 @@
         <ul class="ul-project">
           <% count = max_project_count(visibles, 3)
             0.upto(count) { | i | project = visibles[i] %>
-          <li><a href="/projects/<%= project.id %>" title="<%= project.description %>"><%= project.full_name %></a>
-          </li>
+            <% if project %>
+            <li><a href="/projects/<%= project.id %>" title="<%= project.description %>"><%= project.full_name %></a>
+            </li>
+            <% end %>
           <% } %>
         </ul>
         <% end %>
