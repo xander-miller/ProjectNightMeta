@@ -27,14 +27,16 @@
       <% @confirms.each do | user | %>
       <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
         <a class="pull-left" href="/members/<%= user.id %>" title="<%= user.mu_name %>"><img class="img-thumbnail thumb-height" src="<%= user.mu_thumb_link %>" alt="<%= user.mu_name %>" /></a>
+        <% visibles = user.visible_projects
+          unless visibles.blank? %>
         <ul class="ul-project">
-          <% visibles = user.visible_projects
-            count = max_project_count(visibles, 3)
+          <% count = max_project_count(visibles, 3)
             0.upto(count) { | i | project = visibles[i] %>
           <li><a href="/projects/<%= project.id %>" title="<%= project.description %>"><%= project.full_name %></a>
           </li>
           <% } %>
         </ul>
+        <% end %>
       </div>
       <% end %>
     <% else %>
