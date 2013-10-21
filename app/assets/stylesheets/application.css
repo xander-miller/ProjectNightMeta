@@ -12,9 +12,6 @@
  *  require_tree .
  */
 
-.signin-nav-gap{
-width:50px;
-}
 .project-box a:hover{
 text-decoration: none;
 }
@@ -32,4 +29,13 @@ list-style-type:none;
 .ul-thumb li{
 display:inline;
 text-align:center;
+}
+.thumb-height{
+height:74px;
+}
+.event-cal{
+font-size:11pt;
+}
+.ul-project{
+margin-left:60px;
 }

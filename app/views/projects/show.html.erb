@@ -1,10 +1,11 @@
 <div class="jumbotron">
 <h2><% if @project.is_github -%>
-    <img src="/images/GitHub-Mark-32px.png" title="GitHub project" />&nbsp;
+    <img src="/images/GitHub-Mark-32px.png" title="GitHub project" />
   <% else -%>
-    <span class="glyphicon glyphicon-folder-open" title="Project" />
+    <span class="glyphicon glyphicon-folder-open" title="Project"></span>
   <% end -%>
-  <%= @project.full_name %></h2>
+  &nbsp;<%= @project.full_name %>
+</h2>
 
 <div class="container">
   <p><%= @project.description %></p>
@@ -15,25 +16,25 @@
 </div>
 
 <div class="contributors">
-  <h3>Contributors <span class="glyphicon glyphicon-user" /></h3>
+  <h3><span class="glyphicon glyphicon-user"></span> Contributors</h3>
   <ul class="ul-thumb">
   <% @project.contributors.each do | user | %>
     <li>
-      <a href="/members/<%= user.id %>" title="<%= get_user_name(user, @maintainers) %>"><img class="img-thumbnail" src="<%= user.mu_thumb_link %>" alt="<%= get_user_name(user, @maintainers) %>" /></a>
+      <a href="/members/<%= user.id %>" title="<%= get_user_name(user, @maintainers) %>"><img class="img-thumbnail thumb-height" src="<%= user.mu_thumb_link %>" alt="<%= get_user_name(user, @maintainers) %>" /></a>
     </li>
   <% end %>
   </ul>
 </div>
 
 <div class="groups">
-  <h3>Find <%= @project.user.mu_name %> at these Meetup Groups <span class="glyphicon glyphicon-th-large" /></h3>
+  <h3><span class="glyphicon glyphicon-th-large"></span> Find <%= @project.user.mu_name %> at these Meetup Groups</h3>
   <div class="row">
   <% @project.user.groups.each do | group | %>
   <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
     <div class="thumbnail">
       <a href="/groups/<%= group.urlname %>">
       <div class="caption">
-        <img class="img-rounded" src="<%= group.mu_thumb_link %>"/>
+        <img class="img-rounded thumb-height" src="<%= group.mu_thumb_link %>"/>
         <div class="caption">
         <%= group.mu_name %>
         </div>

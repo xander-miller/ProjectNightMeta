@@ -1,59 +1,60 @@
-<h1><%= @title %>: <%= @group.mu_name %></h1>
+<div class="jumbotron">
+  <h2><a href="<%= @group.mu_link %>" title="Link to meetup.com Group"><img class="img-rounded thumb-height" src="<%= @group.mu_thumb_link %>"/></a> <%= @group.mu_name %>
+  </h2>
 
-<div class="group-img">
-  <a href="<%= @group.mu_link %>" title="Meetup Group home"><img src="<%= @group.mu_thumb_link %>"/></a>
-</div>
-
-<div class="events">
-  <h2>Upcoming Event</h2>
-<% if @event %>
-  <h4><a href="<%= @event.event_url %>" title="Meetup Event detail"><%= @event.name %></a></h4>
-  <%=raw format_event_datetime(@event.time_in_zone) %> &nbsp; RSVP'd: <%= @event.yes_rsvp_count %>
-  <% if session[:mu_uid] %>
-  <address>
-  <strong><%= @event.venue_name %></strong><br/>
-  <%= @event.venue_street %>,
-  <%= @event.venue_city %>
-  </address>
+  <div class="container">
+  <% if @event %>
+    <h4>Upcoming Event</h4>
+    <p><a href="<%= @event.event_url %>" title="Link to meetup.com Event"><span class="glyphicon glyphicon-calendar"></span> <%= @event.name %></a><br />
+    <span class="event-cal"><%=raw format_event_datetime(@event.time_in_zone) %> &nbsp; RSVP'd: <%= @event.yes_rsvp_count %></span></p>
+    <% if session[:mu_uid] %>
+      <address class="event-cal">
+        <strong><%= @event.venue_name %></strong><br/>
+        <%= @event.venue_street %>,
+        <%= @event.venue_city %>
+      </address>
+    <% end %>
   <% end %>
-<% end %>
+  </div>
 </div>
 
 <div class="members">
-  <h3><%= @group.who %></h3>
+  <h3><span class="glyphicon glyphicon-user"></span> <%= @group.who %></h3>
   <% if @event %>
-  <h4>Going</h4>
-
-  <ul>
+    <h4>Attending next event:</h4>
+    <div class="row">
     <% unless @confirms.blank? %>
-    <% @confirms.each do | user | %>
-    <li>
-      <a href="/members/<%= user.id %>" title="<%= user.mu_name %>"><img src="<%= user.mu_thumb_link %>" /></a>
-      <div class="user-projects">
-        <ul>Projects
-        <% user.visible_projects.each do | project | %>
-        <li><a href="/projects/<%= project.id %>" title="<%= project.description %>"><%= project.full_name %></a></li>
-        <% end %>
+      <% @confirms.each do | user | %>
+      <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+        <a class="pull-left" href="/members/<%= user.id %>" title="<%= user.mu_name %>"><img class="img-thumbnail thumb-height" src="<%= user.mu_thumb_link %>" alt="<%= user.mu_name %>" /></a>
+        <ul class="ul-project">
+          <% visibles = user.visible_projects
+            count = max_project_count(visibles, 3)
+            0.upto(count) { | i | project = visibles[i] %>
+          <li><a href="/projects/<%= project.id %>" title="<%= project.description %>"><%= project.full_name %></a>
+          </li>
+          <% } %>
         </ul>
       </div>
-    </li>
-    <% end %>
+      <% end %>
     <% else %>
-      <li>No Project Night members has RSVP'd yet.</li>
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <p>No Project Night members has confirmed for this event.</p>
+      </div>
     <% end %>
-  </ul>
+    </div>
+  <% end %>
 
   <% unless @unconfirms.blank? %>
-  <h4>Undecided</h4>
+    <% if @event %>
+      <h4>May attend next event:</h4>
+    <% end %>
+    <ul class="ul-thumb">
+      <% @unconfirms.each do | user | %>
+      <li>
+        <a href="/members/<%= user.id %>" title="<%= user.mu_name %>"><img class="img-thumbnail thumb-height" src="<%= user.mu_thumb_link %>" alt="<%= user.mu_name %>" /></a>
+      </li>
+      <% end %>
+    </ul>
   <% end %>
-
-  <% end %>
-
-  <ul>
-  <% @unconfirms.each do | user | %>
-  <li>
-    <a href="/members/<%= user.id %>" title="<%= user.mu_name %>"><img src="<%= user.mu_thumb_link %>" /></a>
-  </li>
-  <% end %>
-  </ul>
 </div>
