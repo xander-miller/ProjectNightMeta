@@ -34,11 +34,11 @@ gem 'jquery-rails'
 # gem 'turbolinks' # Disabled for bootstrap compatibility.
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 1.2'
+#gem 'jbuilder', '~> 1.2'
 
 #Custome Gems
 #Bootstrap 3
-gem 'bootstrap-sass-rails'
+#gem 'bootstrap-sass-rails'
 
 #User Authentication and OAuth support
 gem 'omniauth'
