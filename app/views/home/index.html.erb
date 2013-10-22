@@ -1,7 +1,7 @@
 <div id="location">
   <%= form_tag "/location/change", {id: "location_form", method: :put} do %>
   <div class="row">
-  <div class="col-xs-12 col-sm-10 col-md-8 col-lg-5">
+  <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
     <div class="input-group">
       <span class="input-group-addon glyphicon glyphicon-map-marker" title="Current location"></span>
       <input class="form-control" type="text" name="location" maxlength="255" placeholder="Ottawa, ON, CA" value="<%= get_location %>" />

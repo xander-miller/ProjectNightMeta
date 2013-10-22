@@ -1,10 +1,10 @@
 <div class="jumbotron">
   <h2><span class="glyphicon glyphicon-th-large"></span> <%= @title %></h2>
 
-  <div class="group-sync">
+  <div class="container">
     <%= form_tag "/user/groups/sync", {id: "sync_group_form"} do %>
     <div class="row">
-      <div class="col-xs-12 col-sm-10 col-md-8 col-lg-5">
+      <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
         <p>
           <button type="submit" class="btn btn-primary btn-block">
           <span class="glyphicon glyphicon-refresh"></span> Sync Now
