@@ -7,7 +7,7 @@
     <h4>Upcoming Event</h4>
     <p><a href="<%= @event.event_url %>" title="Link to meetup.com Event"><span class="glyphicon glyphicon-calendar"></span> <%= @event.name %></a><br />
     <span class="event-cal"><%=raw format_event_datetime(@event.time_in_zone) %> &nbsp; RSVP'd: <%= @event.yes_rsvp_count %></span></p>
-    <% if session[:mu_uid] %>
+    <% if session[:mu_uid] && !@event.venue.blank? %>
       <address class="event-cal">
         <strong><%= @event.venue_name %></strong><br/>
         <%= @event.venue_street %>,
@@ -25,18 +25,27 @@
     <div class="row">
     <% unless @confirms.blank? %>
       <% @confirms.each do | user | %>
-      <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-        <a class="pull-left" href="/members/<%= user.id %>" title="<%= user.mu_name %>"><img class="img-thumbnail thumb-height" src="<%= user.mu_thumb_link %>" alt="<%= user.mu_name %>" /></a>
-        <% visibles = user.visible_projects
-          unless visibles.blank? %>
-        <ul class="ul-project">
-          <% count = max_project_count(visibles, 3)
-            0.upto(count-1) { | i | project = visibles[i] %>
-            <li><a href="/projects/<%= project.id %>" title="<%= project.description %>"><%= project.full_name %></a>
-            </li>
-          <% } %>
-        </ul>
-        <% end %>
+      <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 bottom-gap">
+
+        <div class="clearfix">
+          <div class="pull-left">
+            <a href="/members/<%= user.id %>" title="<%= user.mu_name %>"><img class="img-thumbnail thumb-height" src="<%= user.mu_thumb_link %>" alt="<%= user.mu_name %>" /></a>
+          </div>
+
+          <div>
+            <% visibles = user.visible_projects
+              unless visibles.blank? %>
+            <ul class="ul-project">
+              <% count = max_project_count(visibles, 3)
+              0.upto(count-1) { | i | project = visibles[i] %>
+              <li><a href="/projects/<%= project.id %>" title="<%= project.description %>"><%= project.full_name %></a>
+              </li>
+              <% } %>
+            </ul>
+            <% end %>
+          </div>
+        </div>
+
       </div>
       <% end %>
     <% else %>

@@ -9,7 +9,7 @@ class EventResource < MeetupResource
     self.name = hash["name"]
     self.event_url = hash["event_url"]
     self.yes_rsvp_count = hash["yes_rsvp_count"]
-    self.venue = hash["venue"]
+    self.venue = hash["venue"] || {}
     self.time = hash["time"]
     self.utc_offset = hash["utc_offset"]
     self.description = hash["description"]
