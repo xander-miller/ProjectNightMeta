@@ -1,0 +1,11 @@
+<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+  <div class='well'>
+    <h4><%= project.full_name %></h4>
+    <small><%= project.language %></small>
+    <% if project.is_github -%>
+      <img src="/images/GitHub-Mark-32px.png" height="16px" title="GitHub project" />
+    <% else -%>
+      <span class="glyphicon glyphicon-folder-open" title="Project"></span>
+    <% end -%>
+  </div>
+</div>
