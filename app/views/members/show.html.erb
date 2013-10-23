@@ -1,49 +1,20 @@
-<div class="jumbotron">
-  <h2><a href="<%= @member.mu_link %>" title="Link to meetup.com Profile"><img class="img-rounded" src="<%= @member.mu_thumb_link %>" alt="photo"/></a> <%= @member.mu_name %>
-  </h2>
-
-</div>
-
-<h3><span class="glyphicon glyphicon-folder-open"></span>&nbsp; <%= @member.mu_name %>'s Projects</h3>
-<div class="projects">
-  <div class="row">
-  <% @member.visible_projects.each do | project | %>
-    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-      <div class="project-box">
-      <p><a href="/projects/<%= project.id %>">
-        <% if project.is_github -%>
-          <img src="/images/GitHub-Mark-32px.png" height="16px" title="GitHub project" />
-        <% else -%>
-          <span class="glyphicon glyphicon-folder-open" title="Project"></span>
-        <% end -%>
-        &nbsp;<span class="project-name"><%= project.full_name %></span></a><br />
-        <span class="project-lang"><%= project.language %></span>
-      </p>
-      </div>
-    </div>
-  <% end %>
+<div class='row'>
+  <div class='col-md-3 col-md-offset-4'>
+        <%= link_to image_tag(@member.mu_photo_link, class: 'center'), @member.mu_link %>
+        <%= link_to content_tag(:h1, @member.mu_name, class: 'text-center'), @member.mu_link %>
   </div>
 </div>
 
+  <h3><span class="glyphicon glyphicon-folder-open"></span>&nbsp; <%= @member.mu_name %>'s Projects</h3>
+<div class="row">
+  <%= render partial: 'projects/project', collection: @member.visible_projects %>
+</div>
+
+
 <% unless @other_projects.blank? %>
-<h3><span class="glyphicon glyphicon-folder-open"></span>&nbsp; <%= @member.mu_name %>'s Collaborations</h3>
-<div class="projects">
+  <h3><span class="glyphicon glyphicon-folder-open"></span>&nbsp; <%= @member.mu_name %>'s Collaborations</h3>
   <div class="row">
-  <% @other_projects.each do | project | %>
-    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-      <div class="project-box">
-      <p><a href="/projects/<%= project.id %>">
-        <% if project.is_github -%>
-          <img src="/images/GitHub-Mark-32px.png" height="16px" title="GitHub project" />
-        <% else -%>
-          <span class="glyphicon glyphicon-folder-open" title="Project"></span>
-        <% end -%>
-        &nbsp;<span class="project-name"><%= project.full_name %></span></a><br />
-        <span class="project-lang"><%= project.language %></span>
-      </p>
-      </div>
-    </div>
-  <% end %>
+    <%= render partial: 'projects/project', collection: @other_projects %>
   </div>
 <% end %>
 
@@ -54,19 +25,6 @@
 <h3><span class="glyphicon glyphicon-th-large"></span> <%= @member.mu_name %>'s Meetup Groups</h3>
 <div class="groups">
   <div class="row">
-  <% @member.groups.each do | group | %>
-    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-    <div class="thumbnail">
-      <a href="/groups/<%= group.urlname %>">
-      <div class="caption">
-        <img class="img-rounded thumb-height" src="<%= group.mu_thumb_link %>" alt="photo"/>
-        <div class="caption">
-        <%= group.mu_name %>
-        </div>
-      </div>
-      </a>
-    </div>
-    </div>
-  <% end %>
+  <%= render partial: 'groups/group', collection: @member.groups %>
   </div>
 </div>

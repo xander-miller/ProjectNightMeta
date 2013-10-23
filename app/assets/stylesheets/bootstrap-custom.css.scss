@@ -2,6 +2,7 @@ $brand-primary: #429b22;
 $brand-info: #c82e36;
 
 $jumbotron-bg: #c9f0bb;
+$thumbnail-bg: $jumbotron-bg;
 
 $navbar-inverse-link-hover-color: #67f332;
 $navbar-inverse-brand-color: #FFF;
@@ -15,4 +16,10 @@ $navbar-inverse-brand-hover-color: #67f332;
 
 .group-thumbnail {
   min-height: 100px;
+}
+
+.center {
+  display: block !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
