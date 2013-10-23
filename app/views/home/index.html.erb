@@ -32,24 +32,10 @@
 
 <div class="projects">
   <% if @projects.blank? %>
-  <p>There are no visible projects. Try changing your location<% if session[:mu_id].blank? %> or <a href="/signin">Sign in</a> to create projects<% end %>.</p>
+    <p>There are no visible projects. Try changing your location<% if session[:mu_id].blank? %> or <a href="/signin">Sign in</a> to create projects<% end %>.</p>
   <% else %>
-  <div class="row">
-  <% @projects.each_with_index do | project, index | %>
-    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-      <div class="project-box">
-      <p><a href="/projects/<%= project.id %>">
-        <% if project.is_github -%>
-          <img src="/images/GitHub-Mark-32px.png" height="16px" title="GitHub project" />
-        <% else -%>
-          <span class="glyphicon glyphicon-folder-open" title="Project"></span>
-        <% end -%>
-        &nbsp;<span class="project-name"><%= project.full_name %></span></a><br />
-        <span class="project-lang"><%= project.language %></span>
-      </p>
-      </div>
+    <div class="row">
+      <%= render partial: 'projects/project', collection: @projects %>
     </div>
-  <% end %>
-  </div>
   <% end %>
 </div>

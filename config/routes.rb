@@ -4,6 +4,7 @@ ProjectNightMeta::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
    root 'home#index'
+   resources :projects, only: [:show]
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
@@ -19,6 +20,7 @@ ProjectNightMeta::Application.routes.draw do
   get  '/projects/:id'    => 'projects#show'
   get  '/members/:id'     => 'members#show'
   get  '/members/:id/manage'   => 'members#manage'
+
 
   get  '/user/account'                 => 'accounts#index'
   post '/user/account/update/profile'  => 'accounts#update_profile'
