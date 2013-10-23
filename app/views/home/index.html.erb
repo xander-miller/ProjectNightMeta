@@ -5,10 +5,12 @@
       <div class='col-md-6'>
         <p>Find Project in your Area</p>        
       </div>
+      <% unless session[:mu_uid] %>
         <div class='col-md-6'>
-          <p>Or <%= link_to 'Sign In','/signin',class: 'btn-lg btn-primary'%> with <%= link_to image_tag('meetup_logo.png'),'/signin' %> to share your own Projects</p>
+          <p>Or <%= link_to 'Sign In','/auth/meetup',class: 'btn-lg btn-primary'%> with <%= link_to image_tag('meetup_logo.png'),'/auth/meetup' %> to share your own Projects</p>
         </div>
-      </div>
+      <% end %>
+    </div>
       <div id="location">
         <%= form_tag "/location/change", {id: "location_form", method: :put} do %>
           <div class="row">

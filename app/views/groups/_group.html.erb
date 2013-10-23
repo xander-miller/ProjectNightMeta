@@ -1,0 +1,11 @@
+
+<div class="col-xs-12 col-sm-6 col-md-4">
+  <%= link_to ("/groups/#{group.urlname}") do %>
+    <div class="thumbnail">
+      <%= image_tag(group.mu_thumb_link, class: 'img-thumbnail group-thumbnail') %>
+      <div class="caption">
+          <h4 class="text-center"><%= group.mu_name %></h4>
+      </div>
+    </div>
+  <% end %>
+</div>

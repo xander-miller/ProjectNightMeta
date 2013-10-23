@@ -2,18 +2,18 @@
   <div class='well'>
     <div class='row'>
       <div class='col-md-4'>
-        <%= image_tag(project.user.mu_thumb_link, class: 'img-circle') %>
+        <%= link_to image_tag(project.user.mu_thumb_link, class: 'img-thumb'), member_path(project.user) %>
       </div>
       <div class='col-md-8'>
         <%= link_to content_tag(:h4, project.name), project_path(project) %>
-        <small><%= project.language %></small>
-        <div class='row'>
+        <p>
           <% if project.is_github -%>
-            <img src="/images/GitHub-Mark-32px.png" height="16px" title="GitHub project" class='pull-right' />
+            <img src="/images/GitHub-Mark-32px.png" height="16px" title="GitHub project" />
           <% else -%>
-            <span class="glyphicon glyphicon-folder-open pull-right" title="Project"></span>
+            <span class="glyphicon glyphicon-folder-open" title="Project"></span>
           <% end -%>
-        </div>
+          <small><%= project.language %></small>
+        </p>
       </div>
     </div>
   </div>

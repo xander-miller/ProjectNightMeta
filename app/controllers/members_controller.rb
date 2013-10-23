@@ -1,4 +1,4 @@
-class MembersController < ApplicationController
+  class MembersController < ApplicationController
   before_action :check_authorized, only: [:manage]
 
   # GET /members/:id

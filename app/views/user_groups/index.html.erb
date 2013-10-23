@@ -1,34 +1,15 @@
-<div class="jumbotron">
-  <h2><span class="glyphicon glyphicon-th-large"></span> <%= @title %></h2>
-
-  <div class="container">
-    <%= form_tag "/user/groups/sync", {id: "sync_group_form"} do %>
-    <div class="row">
-      <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
-        <p>
-          <button type="submit" class="btn btn-primary btn-block">
-          <span class="glyphicon glyphicon-refresh"></span> Sync Now
-          </button>
-        </p>
-      </div>
-    </div>
-    <% end %>
-  </div>
+<div class="row">
+    <h1><span class="glyphicon glyphicon-th-large"></span> <%= @title %></h1>
+</div>
+<div class="row">
+  <%= form_tag "/user/groups/sync", {id: "sync_group_form"} do %>
+    <button type="submit" class="btn-lg btn-primary">
+      <span class="glyphicon glyphicon-refresh"></span> Sync
+    </button>
+  <% end %>
 </div>
 
+
 <div class="row">
-  <% @user.groups.each do | group | %>
-  <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-    <div class="thumbnail">
-      <a href="/groups/<%= group.urlname %>">
-      <div class="caption">
-        <img class="img-rounded thumb-height" src="<%= group.mu_thumb_link %>" alt="photo"/>
-        <div class="caption">
-        <%= group.mu_name %>
-        </div>
-      </div>
-      </a>
-    </div>
-  </div>
-  <% end %>
+  <%= render partial: 'groups/group', collection: @user.groups %>
 </div>

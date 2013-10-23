@@ -22,8 +22,8 @@
           <li><%= link_to content_tag( :span, nil, :class => 'glyphicon glyphicon-cog'),'/user/account'%></li>
           <li><%= link_to content_tag( :span, nil, :class => 'glyphicon glyphicon-off'),'/user/signout'%></li>
           <%- else -%>
-          <li><%= link_to 'Sign in', '/signin'%></li>
-          <li><%= link_to content_tag( :span, nil, :class => 'glyphicon glyphicon-off'),'/signin'%></li>
+          <li><%= link_to 'Sign in', '/auth/meetup'%></li>
+          <li><%= link_to content_tag( :span, nil, :class => 'glyphicon glyphicon-off'),'/auth/meetup'%></li>
           <%- end -%>
         </ul>
       </div><!--/.nav-collapse -->
