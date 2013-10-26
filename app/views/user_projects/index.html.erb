@@ -1,56 +1,79 @@
-<h1><%= @title %></h1>
+<div>
+  <h2><span class="glyphicon glyphicon-folder-open"></span>&nbsp; <%= @title %></h2>
 
-<div id="projects_intro">
-  <% if @user.should_sync_github %>
-<p>User has not sync GitHub projects - provide instruction to sync</p>
-  <% end %>
+  <div class="container">
+    <%= form_tag "/user/projects/sync", {id: "sync_project_form"} do %>
+    <div class="row">
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <p>
+          <button type="submit" class="btn btn-primary btn-block">
+          <span class="glyphicon glyphicon-refresh"></span> Sync GitHub Projects Now
+          </button>
+        </p>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <p>
+          <a class="btn btn-primary btn-block" href="/user/projects/new">
+            <span class="glyphicon glyphicon-folder-open"></span>&nbsp; Create New Project
+          </a>
+        </p>
+      </div>
+    </div>
+    <% end %>
+    <br />
+  </div>
 </div>
 
-<div id="projects">
-  <div class="project-sync">
-  <%= form_tag "/user/projects/sync", {id: "sync_project_form"} do %>
-  <input id="sync_project_btn" type="submit" value="Sync GitHub projects now"/> | <%= link_to "New Project", "/user/projects/new" %>
-  <% end %>
-  </div>
-
-  <div class="projects">
-  <ul>
+<div class="row">
   <% @user.projects.each do | project | %>
-  <li>
-    <div class="project-entry">
-      <ul>
-      <li><% if project.is_github -%>
-        <%= project.full_name %>
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 bottom-gap">
+    <div class="thumbnail">
+      <div class="container bottom-gap">
+ 
+      <p><% if project.is_github -%>
+        <img src="/images/GitHub-Mark-32px.png" height="16px" /> <strong><%= project.full_name %></strong>
         <%- else -%>
-        <a href="/user/projects/<%= project.id %>/edit"><%= project.full_name %></a>
+        <a href="/user/projects/<%= project.id %>/edit" title="Edit Project">
+          <span class="glyphicon glyphicon-folder-open"></span>&nbsp; <strong><%= project.full_name %></strong>
+        </a>
         <%- end -%>
-      </li>
-      <li><%= project.description %></li>
+      </p>
+      <p><%= project.description %></p>
       <% if project.is_github %>
-      <li>fork: <%= project.fork %> &nbsp; lang: <%= project.language %> &nbsp; <a href="<%= project.html_url %>">GitHub</a></li>
+        <p class="project-lang">
+        <% if project.language %>
+          <%= project.language %> &nbsp;
+        <% end %>
+        <% if project.fork %>
+        fork &nbsp;
+        <% end %>
+        <a href="<%= project.html_url %>">GitHub</a>
+        </p>
       <% end %>
-      <%= form_tag( "/user/projects/#{project.id}/toggle", method: :put ) do %>
-        <%= submit_tag (project.visible ? 'Hide' : 'Show') %>
-      <% end %>
-      <% unless project.is_github %>
-      <%= form_tag( "/user/projects/#{project.id}", method: :delete ) do %>
-        <%= submit_tag "delete" %>
-      <% end %>
-      <% end %>
-      <% if @contributor %>
-        <% if !@contributor.contributor_of?(project) %>
-          <%= form_tag( "/user/projects/#{project.id}/add/contributor", method: :put ) do %>
-          <%= submit_tag "Add #{@contributor.mu_name}", {title: "Add Contributor"} %>
+
+      <%= form_tag( "/user/projects/#{project.id}/doaction", method: :put ) do %>
+        <% if project.visible %>
+          <a href="/projects/<%= project.id %>" title="Preview as public"><span class="glyphicon glyphicon-eye-open"></span></a>&nbsp;
+        <% end %>
+        <button class="btn btn-default" name="submit[toggle]" title="Toggle public visibility" type="submit"><span class="glyphicon glyphicon-eye-<%= project.visible ? 'close' : 'open' %>"></span> <%= project.visible ? 'Hide' : 'Show' %></button>
+        &nbsp;
+
+        <% if @contributor %>
+          <% if !@contributor.contributor_of?(project) %>
+          <button class="btn btn-warning" name="submit[del-contrib]" title="Remove Contributor" type="submit"><span class="glyphicon glyphicon-minus"></span> <%= @contributor.mu_name %></button>
+          <% else %>
+          <button class="btn btn-success" name="submit[add-contrib]" title="Add Contributor" type="submit"><span class="glyphicon glyphicon-plus"></span> <%= @contributor.mu_name %></button>
           <% end %>
-        <% else %>
-          <%= form_tag( "/user/projects/#{project.id}/remove/contributor", method: :put ) do %>
-          <%= submit_tag "Remove #{@contributor.mu_name}", {title: "Remove Contributor"} %>
-          <% end %>
+          &nbsp;
+        <% end %>
+
+        <% unless project.is_github %>
+        <button class="btn btn-danger btn-xs" name="submit[delete]" title="Delete this project" type="submit"><span class="glyphicon glyphicon-remove"></span></button>
         <% end %>
       <% end %>
+
+      </div>
     </div>
-  </li>
-  <% end %>
-  </ul>
   </div>
+  <% end %>
 </div>
