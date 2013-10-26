@@ -76,6 +76,30 @@ class UserProjectsController < ApplicationController
     log_error_and_redirect_to(e, '/user/projects')
   end
 
+  # PUT /user/projects/:id/doaction
+  def doaction
+    h = params[:submit]
+    action = h.keys.first unless h.blank?
+    case action
+    when 'delete'
+      delete
+      return
+    when 'toggle'
+      toggle_visible
+      return
+    when 'add-contrib'
+      add_contributor
+      return
+    when 'del-contrib'
+      remove_contributor
+      return
+    else
+      # do nothing
+    end
+
+    redirect_to '/user/projects'
+  end
+
   # DELETE /user/projects/:id
   def delete
     project = find_project
@@ -101,8 +125,7 @@ class UserProjectsController < ApplicationController
   def toggle_visible
     project = find_project
     raise ActiveRecord::RecordNotFound unless project
-    project.toggle(:visible)
-    project.save!
+    project.update_column(:visible, !project.visible) 
 
     respond_to do |format|
       format.html { redirect_to '/user/projects' }

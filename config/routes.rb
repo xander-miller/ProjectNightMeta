@@ -33,6 +33,7 @@ ProjectNightMeta::Application.routes.draw do
   post '/user/projects'        => 'user_projects#create'
   get  '/user/projects/:id/edit' => 'user_projects#edit'
   put  '/user/projects/:id'      => 'user_projects#update'
+  put  '/user/projects/:id/doaction'      => 'user_projects#doaction'
   delete '/user/projects/:id'    => 'user_projects#delete'
   post '/user/projects/sync'   => 'user_projects#sync'
   put  '/user/projects/:id/add/contributor' => 'user_projects#add_contributor'
